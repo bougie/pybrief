@@ -7,6 +7,7 @@ class PostAdmin(admin.ModelAdmin):
     """Admin class for managing blog posts in the admin area"""
 
     form = PostForm
+    fields = PostForm.fields
     list_display = ('title',)
 
 

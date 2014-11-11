@@ -12,7 +12,10 @@ class Post(models.Model):
 
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
-    date = models.DateTimeField(auto_now=True)
+    create_date = models.DateTimeField(auto_now=True)
     content = models.TextField()
+    parser = models.CharField(max_length=30, blank=True, null=True)
+    description_html = models.CharField(max_length=255, blank=True, null=True)
+    content_html = models.TextField(blank=True, null=True)
 
     tags = models.ManyToManyField(Tag, null=True)

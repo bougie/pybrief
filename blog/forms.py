@@ -34,6 +34,8 @@ class PostForm(forms.ModelForm):
     # Override tags form field with a tag field
     tags = TagField(max_length=255, required=False)
 
+    fields = ['title', 'author', 'create_date', 'content', 'parser', 'tags']
+
     def save(self, commit=True):
         """Save the new (or modified) post.
         :param commit: commit or not the result"""
