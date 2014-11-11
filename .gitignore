@@ -2,3 +2,4 @@ docs/_*
 __pycache__
 .ropeproject/
 data/*
+migrations
