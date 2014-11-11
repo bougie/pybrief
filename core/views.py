@@ -1,5 +1,5 @@
-import blog.views
+from django.shortcuts import render_to_response
 
 
 def index(request):
-    return blog.views.index(request)
+        return render_to_response('core/index.tpl', {'posts': []})

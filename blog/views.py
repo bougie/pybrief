@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render_to_response
+from .models import Post
 
 
 def index(request):
-    pass
+    posts = Post.objects.all()
+
+    return render_to_response('blog/index.tpl', {'posts': posts})
