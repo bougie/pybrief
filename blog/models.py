@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Tag(models.Model):
-    """Tags of posts"""
+    """Post's tags"""
 
     name = models.CharField(max_length=255)
 
