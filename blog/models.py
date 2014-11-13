@@ -29,7 +29,6 @@ class Post(models.Model):
             if markdown is not None:
                 extras = ['fenced-code-blocks']
                 self.content_html = markdown(self.content, extras=extras)
-                print(self.content_html)
         except:
             raise self.ValidationError("Player42, try again")
 
