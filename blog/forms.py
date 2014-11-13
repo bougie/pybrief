@@ -1,9 +1,5 @@
 from django import forms
 from .models import Tag
-try:
-    from markdown2 import markdown
-except:
-    markdown = None
 
 
 class TagWidget(forms.TextInput):
@@ -50,23 +46,6 @@ class PostForm(forms.ModelForm):
 
     fields = ['title', 'author', 'create_date', 'content', 'parser', 'tags']
     exclude = ['content_html', 'description_html']
-
-    def clean(self):
-        """Clean the form by cheking all field and trying to parse markdown
-        content. If it success, fill the html cache for each needed fields"""
-
-        cleaned_data = super(PostForm, self).clean()
-
-        try:
-            if markdown is not None:
-                extras = ['fenced-code-blocks']
-                cleaned_data['content_html'] = markdown(
-                    self.cleaned_data['content'],
-                    extras=extras)
-        except:
-            raise forms.ValidationError("Player42, try again")
-
-        return cleaned_data
 
     def save(self, commit=True):
         """Save the new (or modified) post.

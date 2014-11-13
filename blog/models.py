@@ -1,4 +1,8 @@
 from django.db import models
+try:
+    from markdown2 import markdown
+except:
+    markdown = None
 
 
 class Tag(models.Model):
@@ -19,3 +23,14 @@ class Post(models.Model):
     content_html = models.TextField(blank=True, null=True)
 
     tags = models.ManyToManyField(Tag, null=True)
+
+    def clean(self):
+        try:
+            if markdown is not None:
+                extras = ['fenced-code-blocks']
+                self.content_html = markdown(self.content, extras=extras)
+                print(self.content_html)
+        except:
+            raise self.ValidationError("Player42, try again")
+
+        super(Post, self).clean()
