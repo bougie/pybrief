@@ -1,5 +1,9 @@
 from django import forms
 from .models import Tag
+try:
+    from markdown2 import markdown
+except:
+    markdown = None
 
 
 class TagWidget(forms.TextInput):
@@ -24,8 +28,16 @@ class TagField(forms.CharField):
     widget = TagWidget
 
     def clean(self, value):
-        value = super(TagField, self).clean(value)
-        return value
+        return super(TagField, self).clean(value)
+
+
+class MarkdownField(forms.CharField):
+    """Handle markdown input in a form"""
+
+    widget = forms.Textarea()
+
+    def clean(self, value):
+        return super(MarkdownField, self).clean(value)
 
 
 class PostForm(forms.ModelForm):
@@ -33,14 +45,38 @@ class PostForm(forms.ModelForm):
 
     # Override tags form field with a tag field
     tags = TagField(max_length=255, required=False)
+    # Override content form field
+    content = MarkdownField()
 
     fields = ['title', 'author', 'create_date', 'content', 'parser', 'tags']
+    exclude = ['content_html', 'description_html']
+
+    def clean(self):
+        """Clean the form by cheking all field and trying to parse markdown
+        content. If it success, fill the html cache for each needed fields"""
+
+        cleaned_data = super(PostForm, self).clean()
+
+        try:
+            if markdown is not None:
+                extras = ['fenced-code-blocks']
+                cleaned_data['content_html'] = markdown(
+                    self.cleaned_data['content'],
+                    extras=extras)
+        except:
+            raise forms.ValidationError("Player42, try again")
+
+        return cleaned_data
 
     def save(self, commit=True):
         """Save the new (or modified) post.
         :param commit: commit or not the result"""
 
         instance = forms.ModelForm.save(self, commit=False)
+
+        for fieldname in PostForm.exclude:
+            if fieldname in self.cleaned_data:
+                setattr(self, fieldname, self.cleaned_data[fieldname])
 
         def save_m2m():
             """Handle the m2m relation between Post and Tags. This function
