@@ -6,7 +6,7 @@
 		{% for post in posts %}
 		<div class="blog-post">
 			<h2 class="blog-post-title">{{post.title}}</h2>
-			<p class="blog-post-meta">{{post.date}} by <a href="#">{{post.author}}</a></p>
+			<p class="blog-post-meta">le {{post.create_date|date:"d/m/Y à H:i"}} par <a href="#">{{post.author}}</a></p>
 
 			{{post.content_html|safe}}
 		</div>
@@ -21,6 +21,10 @@
 
 		<div class="sidebar-module">
 			<h4>Tags</h4>
+
+			{% for tag in tags %}
+				{{tag.name}}
+			{% endfor %}
 		</div>
 	</div>
 </div>
