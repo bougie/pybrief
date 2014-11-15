@@ -2,7 +2,7 @@ import os
 from django.db import models
 from django.conf import settings
 from django.template.defaultfilters import slugify
-from .utils import save_post_file, md5sum
+from .utils import save_post_file, md5sum, wrap_description
 try:
     from markdown2 import markdown
 except:
@@ -35,6 +35,8 @@ class Post(models.Model):
             if markdown is not None:
                 extras = ['fenced-code-blocks']
                 self.content_html = markdown(self.content, extras=extras)
+                self.description_html = markdown(wrap_description(self.content),
+                                                 extras=extras)
         except:
             raise self.ValidationError("Player42, try again")
 

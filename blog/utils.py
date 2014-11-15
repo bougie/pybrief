@@ -34,3 +34,31 @@ def save_post_file(filename, **kwargs):
         f.write(filecontent)
 
     return md5sum(filename)
+
+
+def wrap_description(content, length=255):
+    """Wrap content text and return description.
+    Description is from begening to the first blank line and/or the first X
+    characters.
+
+    :param content: text to wrap
+    :type content: str
+    :param length: number max of characters in the description
+    :type length: int"""
+
+    description = ""
+
+    for line in content.split('\n'):
+        if len(line.strip()) > 0:
+            description += '%s\n' % (line,)
+        else:
+            break
+
+    if len(description) > length:
+        _description = ''
+        for word in description.split(' '):
+            if len('%s %s' % (_description, word)) < length:
+                _description += ' %s' % (word,)
+        description = _description
+
+    return '%s...' % (description.lstrip().rstrip(),)
