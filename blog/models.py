@@ -1,6 +1,7 @@
 import os
 from django.db import models
 from django.conf import settings
+from django.template.defaultfilters import slugify
 from .utils import save_post_file
 try:
     from markdown2 import markdown
@@ -18,6 +19,7 @@ class Post(models.Model):
     """Blog post"""
 
     title = models.CharField(max_length=255)
+    slug = models.SlugField(blank=True, null=True)
     author = models.CharField(max_length=255)
     create_date = models.DateTimeField(blank=True, null=True)
     content = models.TextField()
@@ -39,11 +41,18 @@ class Post(models.Model):
         super(Post, self).clean()
 
     def save(self, *args, **kwargs):
-        self.hash = save_post_file(
-            filename=os.path.join(settings.BASE_DIR, 'data', str(self.pk) + '.bp'),
-            title=self.title,
-            author=self.author,
-            date=self.create_date,
-            content=self.content,
-            parser=self.parser)
+        if self.slug is None and self.pk is None:
+            # It's a post created from the admin area
+            # slug fieldd have to be initialized
+            self.slug = slugify(self.title)
+        _filename = os.path.join(settings.BASE_DIR,
+                                 'data',
+                                 '%s.bp' % (self.slug,))
+
+        self.hash = save_post_file(filename=_filename,
+                                   title=self.title,
+                                   author=self.author,
+                                   date=self.create_date,
+                                   content=self.content,
+                                   parser=self.parser)
         super(Post, self).save(*args, **kwargs)
