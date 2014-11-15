@@ -25,7 +25,7 @@ def save_post_file(filename, **kwargs):
     filecontent = ""
 
     for header in ['title', 'author', 'date', 'parser']:
-        if header in kwargs:
+        if header in kwargs and len(str(kwargs[header]).strip()) > 0:
             filecontent += "%s: %s\n" % (header, kwargs[header])
     if 'content' in kwargs:
         filecontent += "\n\n%s" % (kwargs['content'],)
