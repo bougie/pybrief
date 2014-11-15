@@ -8,7 +8,7 @@
 			<h2 class="blog-post-title">{{post.title}}</h2>
 			<p class="blog-post-meta">{{post.date}} by <a href="#">{{post.author}}</a></p>
 
-			{{post.content}}
+			{{post.content_html|safe}}
 		</div>
 		{% endfor %}
 	</div>
