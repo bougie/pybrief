@@ -19,7 +19,7 @@ class Post(models.Model):
     """Blog post"""
 
     title = models.CharField(max_length=255)
-    slug = models.SlugField(blank=True, null=True)
+    slug = models.SlugField(blank=True, null=True, default=None)
     author = models.CharField(max_length=255)
     create_date = models.DateTimeField(blank=True, null=True)
     content = models.TextField()
@@ -51,7 +51,7 @@ class Post(models.Model):
                                  'data',
                                  '%s.bp' % (self.slug,))
 
-        if self.pk is None and self.slug is not None:
+        if self.pk is None and os.path.exists(_filename):
             # It's post imported from a existing file
             self.hash = md5sum(_filename)
         else:
