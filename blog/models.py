@@ -2,7 +2,7 @@ import os
 from django.db import models
 from django.conf import settings
 from django.template.defaultfilters import slugify
-from .utils import save_post_file
+from .utils import save_post_file, md5sum
 try:
     from markdown2 import markdown
 except:
@@ -43,16 +43,21 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if self.slug is None and self.pk is None:
             # It's a post created from the admin area
-            # slug fieldd have to be initialized
+            # slug field have to be initialized
             self.slug = slugify(self.title)
         _filename = os.path.join(settings.BASE_DIR,
                                  'data',
                                  '%s.bp' % (self.slug,))
 
-        self.hash = save_post_file(filename=_filename,
-                                   title=self.title,
-                                   author=self.author,
-                                   date=self.create_date,
-                                   content=self.content,
-                                   parser=self.parser)
+        if self.pk is None and self.slug is not None:
+            # It's post imported from a existing file
+            self.hash = md5sum(_filename)
+        else:
+            # New post from admin area or an update
+            self.hash = save_post_file(filename=_filename,
+                                       title=self.title,
+                                       author=self.author,
+                                       date=self.create_date,
+                                       content=self.content,
+                                       parser=self.parser)
         super(Post, self).save(*args, **kwargs)
