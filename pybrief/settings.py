@@ -25,6 +25,10 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+from django.conf import global_settings
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    "core.context_processors.global_vars",
+)
 
 # Application definition
 

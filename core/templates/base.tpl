@@ -16,8 +16,17 @@
 		<div class="blog-masthead">
 			<div class="container">
 				<nav class="blog-nav">
-					<a class="blog-nav-item" href="{% url 'index' %}">Accueil</a>
-					<a class="blog-nav-item" href="{% url 'blog_index' %}">Blog</a>
+					{% if nav_current_module == 'index' %}
+						<a class="blog-nav-item active" href="{% url 'index' %}">Accueil</a>
+					{% else %}
+						<a class="blog-nav-item" href="{% url 'index' %}">Accueil</a>
+					{% endif %}
+
+					{% if nav_current_module == 'blog' %}
+						<a class="blog-nav-item active" href="{% url 'blog_index' %}">Blog</a>
+					{% else %}
+						<a class="blog-nav-item" href="{% url 'blog_index' %}">Blog</a>
+					{% endif %}
 				</nav>
 			</div>
 		</div>

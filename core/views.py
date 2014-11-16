@@ -1,5 +1,5 @@
-from django.shortcuts import render_to_response
+from core.shortcuts import render_response
 
 
 def index(request):
-        return render_to_response('core/index.tpl', {'posts': []})
+    return render_response(request, 'core/index.tpl', {'posts': []})

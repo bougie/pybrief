@@ -1,4 +1,5 @@
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import redirect
+from core.shortcuts import render_response
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from .models import Post, Tag
@@ -10,7 +11,9 @@ def index(request):
     posts = Post.objects.all().order_by('-create_date')
     tags = Tag.objects.all()
 
-    return render_to_response('blog/index.tpl', {'posts': posts, 'tags': tags})
+    return render_response(request,
+                           'blog/index.tpl',
+                           {'posts': posts, 'tags': tags})
 
 
 def show_post(request, postid, postslug=None):
@@ -33,7 +36,7 @@ def show_post(request, postid, postslug=None):
             return redirect(reverse('blog_post', args=[post.id, post.slug]),
                             permanent=True)
 
-    return render_to_response('blog/show_post.tpl', {'post': post})
+    return render_response(request, 'blog/show_post.tpl', {'post': post})
 
 
 def show_posts_by_tag(request, tagname):
@@ -44,4 +47,4 @@ def show_posts_by_tag(request, tagname):
 
     posts = Post.objects.all().order_by('-create_date')
 
-    return render_to_response('blog/posts_by_tag.tpl', {'posts': posts})
+    return render_response(request, 'blog/posts_by_tag.tpl', {'posts': posts})
