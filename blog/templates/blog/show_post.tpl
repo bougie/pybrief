@@ -17,7 +17,7 @@
 		</div>
 
 		{% if post.tags %}
-		<div class="sidebar-module sidebar-module-inset">
+		<div class="sidebar-module sidebar-module">
 			<h4>Tags</h4>
 
 			<ol class="list-unstyled">
