@@ -23,7 +23,7 @@
 			<h4>Tags</h4>
 
 			{% for tag in tags %}
-				{{tag.name}}
+				<a href="{% url 'blog_posts_tag' tag.name %}">{{tag.name}}</a>
 			{% endfor %}
 		</div>
 	</div>
