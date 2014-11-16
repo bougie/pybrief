@@ -1,4 +1,6 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
+from django.core.urlresolvers import reverse
+from django.http import Http404
 from .models import Post, Tag
 
 
@@ -9,6 +11,29 @@ def index(request):
     tags = Tag.objects.all()
 
     return render_to_response('blog/index.tpl', {'posts': posts, 'tags': tags})
+
+
+def show_post(request, postid, postslug=None):
+    """Show post for a given id.
+
+    :param postid: numerical id of the post
+    :type postid: int
+    :param postslug: slug of the post
+    :type postslug: str"""
+
+    #
+    # Check if post exists and if the URL is well formated
+    #
+    try:
+        post = Post.objects.get(id=postid)
+    except Post.DoesNotExist:
+        raise Http404
+    else:
+        if postslug is None or post.slug != postslug:
+            return redirect(reverse('blog_post', args=[post.id, post.slug]),
+                            permanent=True)
+
+    return render_to_response('blog/show_post.tpl', {'post': post})
 
 
 def show_posts_by_tag(request, tagname):
