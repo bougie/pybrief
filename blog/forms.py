@@ -1,5 +1,5 @@
 from django import forms
-from .models import Tag
+from .models import Tag, Post
 
 
 class TagWidget(forms.TextInput):
@@ -44,8 +44,10 @@ class PostForm(forms.ModelForm):
     # Override content form field
     content = MarkdownField()
 
-    fields = ['title', 'author', 'create_date', 'content', 'parser', 'tags']
-    exclude = ['content_html', 'description_html']
+    class Meta:
+        model = Post
+        fields = ['title', 'author', 'create_date', 'content', 'parser', 'tags']
+        exclude = ['content_html', 'description_html']
 
     def save(self, commit=True):
         """Save the new (or modified) post.
@@ -53,7 +55,7 @@ class PostForm(forms.ModelForm):
 
         instance = forms.ModelForm.save(self, commit=False)
 
-        for fieldname in PostForm.exclude:
+        for fieldname in PostForm.Meta.exclude:
             if fieldname in self.cleaned_data:
                 setattr(self, fieldname, self.cleaned_data[fieldname])
 
