@@ -34,6 +34,7 @@
 		<div class="container">
 			<div class="blog-header">
 				<h1 class="blog-title">La cave de bougie</h1>
+				<p class="lead blog-description">Etre saoul sans une goutte d'alcool</p>
 			</div>
 
 			{% block content %}
