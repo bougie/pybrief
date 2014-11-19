@@ -1,4 +1,8 @@
 import hashlib
+import re
+
+
+HEADERS = ['title', 'parser', 'tags', 'author', 'date']
 
 
 def md5sum(filename):
@@ -62,3 +66,27 @@ def wrap_description(content, length=255):
         description = _description
 
     return '%s...' % (description.lstrip().rstrip(),)
+
+
+def parse_blog_file(filename):
+    try:
+        with open(filename, 'r') as f:
+            data = {'content': ''}
+
+            in_headers = True
+            nb_blank_lines = 2
+            for line in f:  # parse headers
+                if in_headers is True:
+                    m = re.search('^(' + '|'.join(HEADERS) + '):(.*)', line)
+                    if m:
+                        data[m.group(1).strip()] = m.group(2).strip()
+                    elif nb_blank_lines > 1:
+                        nb_blank_lines -= 1
+                    else:
+                        in_headers = False
+                else:  # parse body
+                    data['content'] += line
+
+        return data
+    except:
+        return None
