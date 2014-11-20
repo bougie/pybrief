@@ -14,7 +14,7 @@
 	</head>
 	<body>
 		<div class="blog-masthead">
-			<div class="container">
+			<div class="container" id="#top">
 				<nav class="blog-nav">
 					{% if nav_current_module == 'index' %}
 						<a class="blog-nav-item active" href="{% url 'index' %}">Accueil</a>
@@ -42,6 +42,7 @@
 		</div>
 
 		<div class="blog-footer">
+			<q href="#top">Remonter</a><br />
 			§§§ APPARTLAND FTW §§§
 		</div>
 
