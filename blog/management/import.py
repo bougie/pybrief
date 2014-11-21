@@ -162,8 +162,7 @@ class Daemon:
         """
 
 
-def import_files():
-    path = os.path.join(base_dir, 'data')
+def import_files(path):
     for item in os.listdir(path):
         filename = os.path.join(path, item)
         if fnmatch.fnmatch(filename, '*.bp'):
@@ -180,17 +179,25 @@ def import_files():
 
 
 class PostFileEventHandler(FileSystemEventHandler):
+    def __init__(self, path, *args, **kwargs):
+        self.path = path
+
+        super(PostFileEventHandler, self).__init__(*args, **kwargs)
+
     def on_any_event(self, event):
-        import_files()
+        import_files(self.path)
 
 
 class Importer(Daemon):
-    def run(self):
+    def __init__(self, path, *args, **kwargs):
+        self.path = path
 
+        super(Importer, self).__init__(*args, **kwargs)
+
+    def run(self):
         observer = Observer()
-        event_handler = PostFileEventHandler()
-        observer.schedule(event_handler,
-                          os.path.join(base_dir, 'data'),
+        observer.schedule(PostFileEventHandler(self.path),
+                          self.path,
                           recursive=False)
 
         try:
@@ -205,7 +212,8 @@ class Importer(Daemon):
 
 
 def main():
-    importer = Importer(pidfile='/tmp/importer_pybrief.pid',
+    importer = Importer(os.path.join(base_dir, 'data'),
+                        pidfile='/tmp/importer_pybrief.pid',
                         stdout='/tmp/stdout.log',
                         stderr='/tmp/stderr.log')
     importer.start()
