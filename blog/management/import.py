@@ -84,6 +84,9 @@ class Daemon:
         os.dup2(so.fileno(), sys.stdout.fileno())
         os.dup2(se.fileno(), sys.stderr.fileno())
 
+        # A daemon is never localized
+        os.environ.setdefault("LC_ALL", "POSIX")
+
         # write pidfile
         atexit.register(self._delpid)
         pid = str(os.getpid())
