@@ -172,10 +172,6 @@ def import_files(path):
                     PostForm(bpcontent).save()
                 except Exception as e:
                     print(str(e))
-            else:
-                return 1
-
-    return 0
 
 
 class PostFileEventHandler(FileSystemEventHandler):
