@@ -74,6 +74,15 @@ class Daemon:
             except OSError:  # ERROR, fd wasn't open to begin with (ignored)
                 pass
 
+        # A daemon is never localized
+        os.environ.setdefault("LC_ALL", "POSIX")
+
+        # write pidfile
+        atexit.register(self._delpid)
+        pid = str(os.getpid())
+        with open(self.pidfile, 'w+') as f:
+            f.write("%s\n" % pid)
+
         # redirect standard file descriptors
         sys.stdout.flush()
         sys.stderr.flush()
@@ -83,15 +92,6 @@ class Daemon:
         os.dup2(si.fileno(), sys.stdin.fileno())
         os.dup2(so.fileno(), sys.stdout.fileno())
         os.dup2(se.fileno(), sys.stderr.fileno())
-
-        # A daemon is never localized
-        os.environ.setdefault("LC_ALL", "POSIX")
-
-        # write pidfile
-        atexit.register(self._delpid)
-        pid = str(os.getpid())
-        with open(self.pidfile, 'w+') as f:
-            f.write("%s\n" % pid)
 
         # Handler SIGTERM signal
         signal.signal(signal.SIGTERM, self.handler)
@@ -184,6 +184,8 @@ class PostFileEventHandler(FileSystemEventHandler):
         super(PostFileEventHandler, self).__init__(*args, **kwargs)
 
     def on_any_event(self, event):
+        sys.stdout.write("%s %s" % (event.event_type, event.src_path))
+
         import_files(self.path)
 
 
@@ -211,6 +213,8 @@ class Importer(Daemon):
 
 
 def main():
+    global base_dir
+
     importer = Importer(os.path.join(base_dir, 'data'),
                         pidfile='/tmp/importer_pybrief.pid',
                         stdout='/tmp/stdout.log',
