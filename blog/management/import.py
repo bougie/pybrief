@@ -7,6 +7,7 @@ import fnmatch
 import atexit
 import signal
 import resource
+import logging
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -26,12 +27,15 @@ class Daemon:
 
     Usage: subclass the Daemon class and override the run() method"""
 
-    def __init__(self, pidfile, stdin='/dev/null', stdout='/dev/null',
-                 stderr='/dev/null'):
+    def __init__(self, name, pidfile, logdir='/tmp', loglevel=logging.INFO,
+                 stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
+        self.name = name
         self.stdin = stdin
         self.stdout = stdout
         self.stderr = stderr
         self.pidfile = pidfile
+        self.logdir = logdir
+        self.loglevel = loglevel
 
     def daemonize(self):
         """do the UNIX double-fork magic, see Stevens' "Advanced
@@ -44,8 +48,7 @@ class Daemon:
                 # exit first parent
                 sys.exit(0)
         except OSError as e:
-            sys.stderr.write("fork #1 failed: %d (%s)\n" % (e.errno,
-                                                            e.strerror))
+            logging.error("fork #1 failed: %d (%s)\n" % (e.errno, e.strerror))
             sys.exit(1)
 
         # decouple from parent environment
@@ -60,9 +63,11 @@ class Daemon:
                 # exit from second parent
                 sys.exit(0)
         except OSError as e:
-            sys.stderr.write("fork #2 failed: %d (%s)\n" % (e.errno,
-                                                            e.strerror))
+            logging.error("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
             sys.exit(1)
+
+        # A daemon is never localized
+        os.environ.setdefault("LC_ALL", "POSIX")
 
         # close all open file descriptors
         maxfd = resource.getrlimit(resource.RLIMIT_NOFILE)[1]
@@ -74,15 +79,6 @@ class Daemon:
             except OSError:  # ERROR, fd wasn't open to begin with (ignored)
                 pass
 
-        # A daemon is never localized
-        os.environ.setdefault("LC_ALL", "POSIX")
-
-        # write pidfile
-        atexit.register(self._delpid)
-        pid = str(os.getpid())
-        with open(self.pidfile, 'w+') as f:
-            f.write("%s\n" % pid)
-
         # redirect standard file descriptors
         sys.stdout.flush()
         sys.stderr.flush()
@@ -93,8 +89,25 @@ class Daemon:
         os.dup2(so.fileno(), sys.stdout.fileno())
         os.dup2(se.fileno(), sys.stderr.fileno())
 
+        # write pidfile
+        atexit.register(self._delpid)
+        pid = str(os.getpid())
+        with open(self.pidfile, 'w+') as f:
+            f.write("%s\n" % pid)
+
         # Handler SIGTERM signal
         signal.signal(signal.SIGTERM, self.handler)
+
+    def log_to_file(self):
+        """Create an handler to logging for logging message into a file"""
+
+        logger = logging.getLogger()
+
+        handler = logging.FileHandler('%s.log' % (os.path.join(self.logdir,
+                                                               self.name)))
+        handler.setLevel(self.loglevel)
+
+        logger.addHandler(handler)
 
     def handler(self, signum, frame):
         if signum == signal.SIGTERM:
@@ -120,13 +133,16 @@ class Daemon:
         """Start the daemon"""
 
         if self._getpid() is not None:
-            sys.stderr.write(
+            logging.error(
                 "pidfile %s already exist. Daemon already running?\n" % (
                     self.pidfile,))
             sys.exit(1)
 
         # Start the daemon
         self.daemonize()
+        # redirect log message
+        self.log_to_file()
+        # launch core "app"
         self.run()
 
     def stop(self):
@@ -134,7 +150,7 @@ class Daemon:
 
         pid = self._getpid()
         if pid is not None:
-            sys.stderr.write(
+            logging.error(
                 "pidfile %s already exist. Daemon already running?\n" % (
                     self.pidfile,))
             return  # not an error in a restart
@@ -184,18 +200,20 @@ class PostFileEventHandler(FileSystemEventHandler):
         super(PostFileEventHandler, self).__init__(*args, **kwargs)
 
     def on_any_event(self, event):
-        sys.stdout.write("%s %s" % (event.event_type, event.src_path))
+        logging.debug("%s %s" % (event.event_type, event.src_path))
 
         import_files(self.path)
 
 
 class Importer(Daemon):
-    def __init__(self, path, *args, **kwargs):
+    def __init__(self, name, path, *args, **kwargs):
         self.path = path
 
-        super(Importer, self).__init__(*args, **kwargs)
+        super(Importer, self).__init__(name, *args, **kwargs)
 
     def run(self):
+        logging.info('Start watching %s directory' % (self.path,))
+
         observer = Observer()
         observer.schedule(PostFileEventHandler(self.path),
                           self.path,
@@ -207,18 +225,22 @@ class Importer(Daemon):
             while True:
                 time.sleep(1)
         except Exception as e:
-            sys.stderr.write("Error on watchdog : %s" % (str(e)))
+            logging.error("Error on watchdog : %s" % (str(e),))
             observer.stop()
         observer.join()
 
 
 def main():
-    global base_dir
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
 
-    importer = Importer(os.path.join(base_dir, 'data'),
-                        pidfile='/tmp/importer_pybrief.pid',
-                        stdout='/tmp/stdout.log',
-                        stderr='/tmp/stderr.log')
+    importer = Importer('importer',
+                        os.path.join(base_dir, 'data'),
+                        logdir='/tmp',
+                        loglevel=logging.DEBUG,
+                        stdout='/tmp/importer_stdout.log',
+                        stderr='/tmp/importer_stderr.log',
+                        pidfile='/tmp/importer_pybrief.pid')
     importer.start()
 
     return 0
