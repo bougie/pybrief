@@ -49,7 +49,7 @@ class Daemon:
                 sys.exit(0)
         except OSError as e:
             logging.error("fork #1 failed: %d (%s)\n" % (e.errno, e.strerror))
-            sys.exit(1)
+            os._exit(1)
 
         # decouple from parent environment
         os.chdir("/")
@@ -64,7 +64,7 @@ class Daemon:
                 sys.exit(0)
         except OSError as e:
             logging.error("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
-            sys.exit(1)
+            os._exit(1)
 
         # A daemon is never localized
         os.environ.setdefault("LC_ALL", "POSIX")
@@ -90,13 +90,20 @@ class Daemon:
         os.dup2(se.fileno(), sys.stderr.fileno())
 
         # write pidfile
-        atexit.register(self._delpid)
         pid = str(os.getpid())
         with open(self.pidfile, 'w+') as f:
             f.write("%s\n" % pid)
+        atexit.register(self._delpid)
 
         # Handler SIGTERM signal
         signal.signal(signal.SIGTERM, self.handler)
+
+    def handler(self, signum, frame):
+        if signum == signal.SIGTERM:
+            # pidfile will be deleted by _delpid
+            sys.exit(0)
+        else:
+            logging.debug("Signal %s caught" % (signal,))
 
     def log_to_file(self):
         """Create an handler to logging for logging message into a file"""
@@ -108,11 +115,6 @@ class Daemon:
         handler.setLevel(self.loglevel)
 
         logger.addHandler(handler)
-
-    def handler(self, signum, frame):
-        if signum == signal.SIGTERM:
-            # pidfile will be deleted by _delpid
-            atexit.exit(0)
 
     def _delpid(self):
         if os.path.exists(self.pidfile):
