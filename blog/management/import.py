@@ -10,7 +10,7 @@ import resource
 import logging
 import argparse
 from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
+from watchdog.events import FileSystemEventHandler, FileSystemMovedEvent
 
 base_dir = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -203,7 +203,13 @@ class PostFileEventHandler(FileSystemEventHandler):
         super(PostFileEventHandler, self).__init__(*args, **kwargs)
 
     def on_any_event(self, event):
-        logging.debug("%s %s" % (event.event_type, event.src_path))
+        if event.is_directory is False:
+            if isinstance(event, FileSystemMovedEvent):
+                logging.debug("%s %s -> %s" % (event.event_type,
+                                               event.src_path,
+                                               event.dest_path))
+            else:
+                logging.debug("%s %s" % (event.event_type, event.src_path))
 
         import_files(self.path)
 
