@@ -8,6 +8,7 @@ import atexit
 import signal
 import resource
 import logging
+import argparse
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -233,17 +234,37 @@ class Importer(Daemon):
 
 
 def main():
+    parser = argparse.ArgumentParser(description='')
+
+    parser.add_argument('action', choices=['start', 'stop', 'restart'])
+    parser.add_argument('-d', '--debug', default=None, action="store_true",
+                        help='activate the debug mode')
+
+    args = parser.parse_args()
+
     logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+    if getattr(args, 'debug', None) is not None:
+        logger.setLevel(logging.DEBUG)
+    else:
+        logger.setLevel(logging.INFO)
 
     importer = Importer('importer',
                         os.path.join(base_dir, 'data'),
                         logdir='/tmp',
-                        loglevel=logging.DEBUG,
+                        loglevel=logger.getEffectiveLevel(),
                         stdout='/tmp/importer_stdout.log',
                         stderr='/tmp/importer_stderr.log',
                         pidfile='/tmp/importer_pybrief.pid')
-    importer.start()
+
+    action = getattr(args, 'action', None)
+    if action == 'start':
+        importer.start()
+    elif action == 'stop':
+        importer.stop()
+    elif action == 'restart':
+        importer.restart()
+    else:
+        return 1
 
     return 0
 
