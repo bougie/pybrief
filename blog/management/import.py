@@ -152,9 +152,9 @@ class Daemon:
         """Stop the daemon"""
 
         pid = self._getpid()
-        if pid is not None:
+        if pid is None:
             logging.error(
-                "pidfile %s already exist. Daemon already running?\n" % (
+                "pidfile %s does not exist. Daemon not running?\n" % (
                     self.pidfile,))
             return  # not an error in a restart
 
