@@ -3,7 +3,6 @@ import os
 import sys
 import time
 import django
-import fnmatch
 import atexit
 import signal
 import resource
@@ -185,15 +184,24 @@ class Daemon:
 
 
 def import_files(path):
+    """Import all file from a directory `path`"""
+
     for item in os.listdir(path):
-        filename = os.path.join(path, item)
-        if fnmatch.fnmatch(filename, '*.bp'):
-            bpcontent = parse_blog_file(filename)
-            if bpcontent is not None:
-                try:
-                    PostForm(bpcontent).save()
-                except Exception as e:
-                    print(str(e))
+        import_file(os.path.join(path, item))
+
+
+def import_file(filename):
+    """import the file `filename`"""
+
+    if filename.endswith('.bp'):
+        logging.debug("Importing %s" % (filename,))
+        bpcontent = parse_blog_file(filename)
+        if bpcontent is not None:
+            try:
+                PostForm(bpcontent).save()
+            except Exception as e:
+                logging.error("Error while importing %s : %s" % (filename,
+                                                                 str(e)))
 
 
 class PostFileEventHandler(FileSystemEventHandler):
@@ -208,10 +216,12 @@ class PostFileEventHandler(FileSystemEventHandler):
                 logging.debug("%s %s -> %s" % (event.event_type,
                                                event.src_path,
                                                event.dest_path))
+                path = event.dest_path
             else:
                 logging.debug("%s %s" % (event.event_type, event.src_path))
+                path = event.src_path
 
-        import_files(self.path)
+            import_file(path)
 
 
 class Importer(Daemon):
