@@ -71,7 +71,7 @@ class Daemon:
 
         # close all open file descriptors
         maxfd = resource.getrlimit(resource.RLIMIT_NOFILE)[1]
-        if (maxfd == resource.RLIM_INFINITY):
+        if maxfd == resource.RLIM_INFINITY:
             maxfd = 1024
         for fd in range(0, maxfd):
             try:
