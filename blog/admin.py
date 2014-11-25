@@ -8,7 +8,8 @@ class PostAdmin(admin.ModelAdmin):
 
     form = PostForm
     fields = PostForm.Meta.fields
-    list_display = ('title',)
+    list_display = ('title', 'slug', 'author', 'filename', 'create_date',
+                    'parser')
 
 
 class TagAdmin(admin.ModelAdmin):
