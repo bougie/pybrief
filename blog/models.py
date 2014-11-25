@@ -7,6 +7,7 @@ try:
     from markdown2 import markdown
 except:
     markdown = None
+import logging
 
 
 class Tag(models.Model):
@@ -27,6 +28,7 @@ class Post(models.Model):
     description_html = models.CharField(max_length=255, blank=True, null=True)
     content_html = models.TextField(blank=True, null=True)
     hash = models.TextField(null=True, default=None)
+    filename = models.TextField(null=True, default=None)
 
     tags = models.ManyToManyField(Tag, null=True)
 
@@ -43,20 +45,22 @@ class Post(models.Model):
         super(Post, self).clean()
 
     def save(self, *args, **kwargs):
-        if self.slug is None and self.pk is None:
-            # It's a post created from the admin area
-            # slug field have to be initialized
-            self.slug = slugify(self.title)
-        _filename = os.path.join(settings.BASE_DIR,
-                                 'data',
-                                 '%s.bp' % (self.slug,))
+        self.slug = slugify(self.title)
 
-        if self.pk is None and os.path.exists(_filename):
+        if self.filename is None:
+            self.filename = os.path.join(settings.BASE_DIR,
+                                         'data',
+                                         '%s.bp' % (self.slug,))
+
+        logging.debug("Post model filename %s" % (self.filename,))
+        logging.debug("Post model pk %s" % (self.pk,))
+
+        if self.pk is None and os.path.exists(self.filename):
             # It's post imported from a existing file
-            self.hash = md5sum(_filename)
+            self.hash = md5sum(self.filename)
         else:
             # New post from admin area or an update
-            self.hash = save_post_file(filename=_filename,
+            self.hash = save_post_file(filename=self.filename,
                                        title=self.title,
                                        author=self.author,
                                        date=self.create_date,

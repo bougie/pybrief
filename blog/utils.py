@@ -71,7 +71,7 @@ def wrap_description(content, length=255):
 def parse_blog_file(filename):
     try:
         with open(filename, 'r') as f:
-            data = {'content': ''}
+            data = {'filename': filename, 'content': ''}
 
             in_headers = True
             nb_blank_lines = 2

@@ -46,18 +46,14 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['title', 'author', 'create_date', 'content', 'parser', 'tags']
-        exclude = ['content_html', 'description_html']
+        fields = ['title', 'author', 'create_date', 'content', 'parser', 'tags',
+                  'filename']
 
     def save(self, commit=True):
         """Save the new (or modified) post.
         :param commit: commit or not the result"""
 
         instance = forms.ModelForm.save(self, commit=False)
-
-        for fieldname in PostForm.Meta.exclude:
-            if fieldname in self.cleaned_data:
-                setattr(self, fieldname, self.cleaned_data[fieldname])
 
         def save_m2m():
             """Handle the m2m relation between Post and Tags. This function
