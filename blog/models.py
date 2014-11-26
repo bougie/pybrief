@@ -7,7 +7,6 @@ try:
     from markdown2 import markdown
 except:
     markdown = None
-import logging
 
 
 class Tag(models.Model):
@@ -47,13 +46,11 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
 
+        # filename is filled when the post is first imported from a file
         if self.filename is None:
             self.filename = os.path.join(settings.BASE_DIR,
                                          'data',
                                          '%s.bp' % (self.slug,))
-
-        logging.debug("Post model filename %s" % (self.filename,))
-        logging.debug("Post model pk %s" % (self.pk,))
 
         if self.pk is None and os.path.exists(self.filename):
             # It's post imported from a existing file

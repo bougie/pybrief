@@ -69,14 +69,19 @@ def wrap_description(content, length=255):
 
 
 def parse_blog_file(filename):
+    """Parse the content of a blog post.
+
+    :param filename: path to the post to parse
+    :type filename: str"""
+
     try:
         with open(filename, 'r') as f:
             data = {'filename': filename, 'content': ''}
 
             in_headers = True
             nb_blank_lines = 2
-            for line in f:  # parse headers
-                if in_headers is True:
+            for line in f:
+                if in_headers is True:  # parse headers
                     m = re.search('^(' + '|'.join(HEADERS) + '):(.*)', line)
                     if m:
                         data[m.group(1).strip()] = m.group(2).strip()

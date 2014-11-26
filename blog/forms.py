@@ -51,6 +51,7 @@ class PostForm(forms.ModelForm):
 
     def save(self, commit=True):
         """Save the new (or modified) post.
+
         :param commit: commit or not the result"""
 
         instance = forms.ModelForm.save(self, commit=False)
