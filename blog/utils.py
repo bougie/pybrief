@@ -30,6 +30,9 @@ def save_post_file(filename, **kwargs):
 
     filecontent = ""
 
+    if 'date' in kwargs:
+        kwargs['date'] = kwargs['date'].strftime('%Y-%m-%d %H:%M')
+
     for header in ['title', 'author', 'date', 'parser']:
         if header in kwargs and len(str(kwargs[header]).strip()) > 0:
             filecontent += "%s: %s\n" % (header, kwargs[header])
