@@ -27,7 +27,7 @@ class Post(models.Model):
     description_html = models.CharField(max_length=255, blank=True, null=True)
     content_html = models.TextField(blank=True, null=True)
     hash = models.TextField(null=True, default=None)
-    filename = models.TextField(null=True, default=None)
+    filename = models.TextField(blank=True, null=True, default=None)
 
     tags = models.ManyToManyField(Tag, null=True)
 
