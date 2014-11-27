@@ -51,6 +51,14 @@ class Post(models.Model):
             self.filename = os.path.join(settings.BASE_DIR,
                                          'data',
                                          '%s.bp' % (self.slug,))
+        else:
+            try:
+                self.pk = Post.objects.get(filename=self.filename).pk
+            except Post.DoesNotExist:
+                self.pk = None
+            except Post.MultipleObjectsReturned:
+                raise ValueError(
+                    "Error while retrieving primary key value for the update")
 
         if self.pk is None and os.path.exists(self.filename):
             # It's post imported from a existing file
