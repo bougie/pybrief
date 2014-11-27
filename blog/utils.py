@@ -1,5 +1,7 @@
 import hashlib
 import re
+from django.utils.dateparse import parse_datetime
+from datetime import datetime
 
 
 HEADERS = ['title', 'parser', 'tags', 'author', 'date']
@@ -91,6 +93,12 @@ def parse_blog_file(filename):
                         in_headers = False
                 else:  # parse body
                     data['content'] += line
+
+            # Do some transformations
+            if 'date' in data:
+                data['create_date'] = parse_datetime(data['date'])
+            else:
+                data['create_date'] = datetime.now()
 
         return data
     except:
