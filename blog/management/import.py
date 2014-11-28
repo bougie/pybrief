@@ -186,26 +186,21 @@ class Daemon:
 def import_from_file(filename):
     """import the file `filename`"""
 
-    if filename.endswith('.bp'):
-        logging.debug("Importing %s" % (filename,))
-        bpcontent = parse_blog_file(filename)
-        if bpcontent is not None:
-            try:
-                PostForm(bpcontent).save()
-            except Exception as e:
-                logging.error("Error while importing %s : %s" % (filename,
-                                                                 str(e)))
+    bpcontent = parse_blog_file(filename)
+    if bpcontent is not None:
+        try:
+            PostForm(bpcontent).save()
+        except Exception as e:
+            logging.error("Error while importing %s : %s" % (filename, str(e)))
 
 
 def delete_from_file(filename):
     """Delete a post in the BDD for a gevin filename"""
 
-    if filename.endswith('.bp'):
-        logging.debug("Deleting %s" % (filename,))
-        try:
-            delete_post(filename)
-        except Exception as e:
-            logging.error("Error while deleting %s : %s" % (filename, str(e)))
+    try:
+        delete_post(filename)
+    except Exception as e:
+        logging.error("Error while deleting %s : %s" % (filename, str(e)))
 
 
 def import_from_files(path):
@@ -234,7 +229,7 @@ class PostFileEventHandler(FileSystemEventHandler):
         self._on_change(event, deleted=True)
 
     def _on_change(self, event, deleted=False):
-        if event.is_directory is False:
+        if event.is_directory is False and event.src_path.endswith('.bp'):
             if isinstance(event, FileSystemMovedEvent):
                 logging.debug("%s %s -> %s" % (event.event_type,
                                                event.src_path,
