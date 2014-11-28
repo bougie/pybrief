@@ -1,8 +1,7 @@
 import hashlib
 import re
-from django.utils.dateparse import parse_datetime
 from datetime import datetime
-
+from django.utils.dateparse import parse_datetime
 
 HEADERS = ['title', 'parser', 'tags', 'author', 'date']
 

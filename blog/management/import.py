@@ -183,14 +183,7 @@ class Daemon:
         """
 
 
-def import_files(path):
-    """Import all file from a directory `path`"""
-
-    for item in os.listdir(path):
-        import_file(os.path.join(path, item))
-
-
-def import_file(filename):
+def import_from_file(filename):
     """import the file `filename`"""
 
     if filename.endswith('.bp'):
@@ -202,6 +195,13 @@ def import_file(filename):
             except Exception as e:
                 logging.error("Error while importing %s : %s" % (filename,
                                                                  str(e)))
+
+
+def import_from_files(path):
+    """Import all file from a directory `path`"""
+
+    for item in os.listdir(path):
+        import_from_file(os.path.join(path, item))
 
 
 class PostFileEventHandler(FileSystemEventHandler):
@@ -228,7 +228,7 @@ class PostFileEventHandler(FileSystemEventHandler):
             else:
                 logging.debug("%s %s" % (event.event_type, event.src_path))
 
-            import_file(event.src_path)
+            import_from_file(event.src_path)
 
 
 class Importer(Daemon):
