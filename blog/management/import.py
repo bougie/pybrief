@@ -18,7 +18,7 @@ sys.path.append(base_dir)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pybrief.settings")
 django.setup()
 
-from blog.utils import parse_blog_file
+from blog.utils import parse_blog_file, delete_post
 from blog.forms import PostForm
 
 
@@ -197,6 +197,17 @@ def import_from_file(filename):
                                                                  str(e)))
 
 
+def delete_from_file(filename):
+    """Delete a post in the BDD for a gevin filename"""
+
+    if filename.endswith('.bp'):
+        logging.debug("Deleting %s" % (filename,))
+        try:
+            delete_post(filename)
+        except Exception as e:
+            logging.error("Error while deleting %s : %s" % (filename, str(e)))
+
+
 def import_from_files(path):
     """Import all file from a directory `path`"""
 
@@ -219,7 +230,10 @@ class PostFileEventHandler(FileSystemEventHandler):
     def on_moved(self, event):
         self._on_change(event)
 
-    def _on_change(self, event):
+    def on_deleted(self, event):
+        self._on_change(event, deleted=True)
+
+    def _on_change(self, event, deleted=False):
         if event.is_directory is False:
             if isinstance(event, FileSystemMovedEvent):
                 logging.debug("%s %s -> %s" % (event.event_type,
@@ -232,7 +246,10 @@ class PostFileEventHandler(FileSystemEventHandler):
 
                 path = event.src_path
 
-            import_from_file(path)
+            if deleted:
+                delete_from_file(path)
+            else:
+                import_from_file(path)
 
 
 class Importer(Daemon):

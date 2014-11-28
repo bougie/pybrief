@@ -1,7 +1,9 @@
 import hashlib
 import re
+import logging
 from datetime import datetime
 from django.utils.dateparse import parse_datetime
+import blog.models
 
 HEADERS = ['title', 'parser', 'tags', 'author', 'date']
 
@@ -105,3 +107,12 @@ def parse_blog_file(filename):
         return data
     except:
         return None
+
+
+def delete_post(filename):
+    try:
+        blog.models.Post.objects.get(filename=filename).delete()
+    except blog.models.Post.DoesNotExist:
+        logging.error("Error while retrieving blog post to delete")
+    except Exception as e:
+        logging.error(str(e))
