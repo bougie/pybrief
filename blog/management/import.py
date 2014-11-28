@@ -225,10 +225,14 @@ class PostFileEventHandler(FileSystemEventHandler):
                 logging.debug("%s %s -> %s" % (event.event_type,
                                                event.src_path,
                                                event.dest_path))
+
+                path = event.dest_path
             else:
                 logging.debug("%s %s" % (event.event_type, event.src_path))
 
-            import_from_file(event.src_path)
+                path = event.src_path
+
+            import_from_file(path)
 
 
 class Importer(Daemon):
