@@ -63,12 +63,13 @@ class PostForm(forms.ModelForm):
             instance.tags.clear()
             for tagname in self.cleaned_data['tags'].split(','):
                 tagname = tagname.lower().strip()
-                try:
-                    tag = Tag.objects.get(name=tagname)
-                except Tag.DoesNotExist:
-                    tag = Tag(name=tagname)
-                    tag.save()
-                instance.tags.add(tag)
+                if len(tagname) > 0:
+                    try:
+                        tag = Tag.objects.get(name=tagname)
+                    except Tag.DoesNotExist:
+                        tag = Tag(name=tagname)
+                        tag.save()
+                    instance.tags.add(tag)
         self.save_m2m = save_m2m
 
         if commit:
