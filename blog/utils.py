@@ -104,6 +104,9 @@ def parse_blog_file(filename):
             else:
                 data['create_date'] = datetime.now()
 
+            if 'author' not in data:
+                data['author'] = 'unknown'
+
         return data
     except:
         return None
