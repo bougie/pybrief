@@ -49,10 +49,11 @@ class PostForm(forms.ModelForm):
         fields = ['title', 'author', 'create_date', 'content', 'parser', 'tags',
                   'filename']
 
-    def save(self, commit=True):
+    def save(self, commit=True, no_save_file=False):
         """Save the new (or modified) post.
 
-        :param commit: commit or not the result"""
+        :param commit: commit or not the result
+        :param no_save_file: do not generate and save post file on disk"""
 
         instance = forms.ModelForm.save(self, commit=False)
 
@@ -73,7 +74,7 @@ class PostForm(forms.ModelForm):
         self.save_m2m = save_m2m
 
         if commit:
-            instance.save()
+            instance.save(no_save_file=no_save_file)
             self.save_m2m()
 
         return instance

@@ -189,7 +189,7 @@ def import_from_file(filename):
     bpcontent = parse_blog_file(filename)
     if bpcontent is not None:
         try:
-            PostForm(bpcontent).save()
+            PostForm(bpcontent).save(no_save_file=True)
         except Exception as e:
             logging.error("Error while importing %s : %s" % (filename, str(e)))
 

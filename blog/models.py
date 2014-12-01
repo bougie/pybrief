@@ -46,29 +46,45 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
 
-        # filename is filled when the post is first imported from a file
-        if self.filename is None:
+        if self.filename is None or len(self.filename.strip()) == 0:
+            # It's a new post created from the admin area
             self.filename = os.path.join(settings.BASE_DIR,
                                          'data',
                                          '%s.bp' % (self.slug,))
         else:
+            # It's a post imported (new or update) from an existing file
+            # or it's a post updated from the admin area
             try:
-                self.pk = Post.objects.get(filename=self.filename).pk
+                post = Post.objects.get(filename=self.filename)
+                self.pk = post.pk
+                self.hash = post.hash
             except Post.DoesNotExist:
                 self.pk = None
+                self.hash = None
             except Post.MultipleObjectsReturned:
                 raise ValueError(
                     "Error while retrieving primary key value for the update")
 
-        if self.pk is None and os.path.exists(self.filename):
-            # It's post imported from a existing file
-            self.hash = md5sum(self.filename)
-        else:
-            # New post from admin area or an update
+        do_save = True
+        if ('no_save_file' in kwargs and kwargs['no_save_file'] is False
+                or 'no_save_file' not in kwargs):
+            # Save the post file only if it's edition from the admin area. In
+            # this cas, no_save_file will not exist or it's value will be False.
             self.hash = save_post_file(filename=self.filename,
                                        title=self.title,
                                        author=self.author,
                                        date=self.create_date,
                                        content=self.content,
                                        parser=self.parser)
-        super(Post, self).save(*args, **kwargs)
+
+            # when importing from file, save the post in DB when it content has
+            # changed (hash is different)
+            if self.hash is None or self.hash != md5sum(self.filename):
+                do_save = True
+            else:
+                do_save = False
+
+        if do_save:
+            if 'no_save_file' in kwargs:
+                del kwargs['no_save_file']
+            super(Post, self).save(*args, **kwargs)
