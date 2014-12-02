@@ -207,7 +207,8 @@ def import_from_files(path):
     """Import all file from a directory `path`"""
 
     for item in os.listdir(path):
-        import_from_file(os.path.join(path, item))
+        if item.endswith('.bp'):
+            import_from_file(os.path.join(path, item))
 
 
 class PostFileEventHandler(FileSystemEventHandler):
@@ -254,6 +255,9 @@ class Importer(Daemon):
         super(Importer, self).__init__(name, *args, **kwargs)
 
     def run(self):
+        logging.info('Massive import')
+        import_from_files(self.path)
+
         logging.info('Start watching %s directory' % (self.path,))
 
         observer = Observer()
