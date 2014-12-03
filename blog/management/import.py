@@ -18,6 +18,7 @@ sys.path.append(base_dir)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pybrief.settings")
 django.setup()
 
+from django.conf import settings
 from blog.utils import parse_blog_file, delete_post
 from blog.forms import PostForm
 
@@ -291,13 +292,24 @@ def main():
     else:
         logger.setLevel(logging.INFO)
 
+    exit = False
+    for cfgitem in ['DATA_DIR', 'LOG_DIR', 'PID_DIR']:
+        if hasattr(settings, cfgitem) is False:
+            logging.error('Error in config file. Missing item %s' % (cfgitem),)
+            exit = True
+    if exit is True:
+        return 1
+
     importer = Importer('importer',
-                        os.path.join(base_dir, 'data'),
-                        logdir='/tmp',
+                        getattr(settings, 'DATA_DIR'),
+                        logdir=getattr(settings, 'LOG_DIR'),
                         loglevel=logger.getEffectiveLevel(),
-                        stdout='/tmp/importer_stdout.log',
-                        stderr='/tmp/importer_stderr.log',
-                        pidfile='/tmp/importer_pybrief.pid')
+                        stdout=os.path.join(getattr(settings, 'LOG_DIR'),
+                                            'importer_stdout.log'),
+                        stderr=os.path.join(getattr(settings, 'LOG_DIR'),
+                                            'importer_stderr.log'),
+                        pidfile=os.path.join(getattr(settings, 'PID_DIR'),
+                                             'importer.pid'))
 
     action = getattr(args, 'action', None)
     if action == 'start':
