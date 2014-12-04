@@ -30,6 +30,23 @@ class Daemon:
 
     def __init__(self, name, pidfile, logdir='/tmp', loglevel=logging.INFO,
                  stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
+        """Create a new Daemon
+        :param name: name of the daemon
+        :type name: string
+        :param pidfile: absolute path to the pidfile
+        :type pidfile: string
+        :param logdir: absolute path to the directory which will contains logs
+        :type logdir: string
+        :param loglevel:
+        :type loglevel:
+        :param stdin: path to the standart input
+        :type stdin: string
+        :param stdout: path to the standart outpuy
+        :type stdout: string
+        :param stderr: path to the standart error output
+        :type stderr: string
+        """
+
         self.name = name
         self.stdin = stdin
         self.stdout = stdout
@@ -100,6 +117,8 @@ class Daemon:
         signal.signal(signal.SIGTERM, self.handler)
 
     def handler(self, signum, frame):
+        """Add an handler for the signal `signum`"""
+
         if signum == signal.SIGTERM:
             # pidfile will be deleted by _delpid
             sys.exit(0)
