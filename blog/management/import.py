@@ -19,8 +19,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pybrief.settings")
 django.setup()
 
 from django.conf import settings
-from blog.utils import parse_blog_file, delete_post
-from blog.forms import PostForm
+from blog.utils import delete_post, import_post_file
 
 
 class Daemon:
@@ -206,12 +205,10 @@ class Daemon:
 def import_from_file(filename):
     """import the file `filename`"""
 
-    bpcontent = parse_blog_file(filename)
-    if bpcontent is not None:
-        try:
-            PostForm(bpcontent).save(no_save_file=True)
-        except Exception as e:
-            logging.error("Error while importing %s : %s" % (filename, str(e)))
+    try:
+        import_post_file(filename)
+    except Exception as e:
+        logging.error("Error while importing %s : %s" % (filename, str(e)))
 
 
 def delete_from_file(filename):

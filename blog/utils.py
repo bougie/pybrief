@@ -4,6 +4,7 @@ import logging
 from datetime import datetime
 from django.utils.dateparse import parse_datetime
 import blog.models
+import blog.posts
 
 HEADERS = ['title', 'parser', 'tags', 'author', 'date']
 
@@ -119,3 +120,12 @@ def delete_post(filename):
         logging.error("Error while retrieving blog post to delete")
     except Exception as e:
         logging.error(str(e))
+
+
+def import_post_file(filename):
+    bpcontent = parse_blog_file(filename)
+    if bpcontent is not None:
+        try:
+            blog.forms.PostForm(bpcontent).save(no_save_file=True)
+        except Exception as e:
+            logging.error("Error while importing %s : %s" % (filename, str(e)))
