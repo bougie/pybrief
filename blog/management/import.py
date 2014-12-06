@@ -19,7 +19,9 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pybrief.settings")
 django.setup()
 
 from django.conf import settings
-from blog.utils import delete_post, import_post_file
+from blog.models import Post
+from blog.forms import PostForm
+from blog.utils import parse_blog_file
 
 
 class Daemon:
@@ -230,6 +232,24 @@ def import_from_files(path):
             import_from_file(os.path.join(path, item))
 
 
+def delete_post(filename):
+    try:
+        Post.objects.get(filename=filename).delete()
+    except Post.DoesNotExist:
+        logging.error("Error while retrieving blog post to delete")
+    except Exception as e:
+        logging.error(str(e))
+
+
+def import_post_file(filename):
+    bpcontent = parse_blog_file(filename)
+    if bpcontent is not None:
+        try:
+            PostForm(bpcontent).save(no_save_file=True)
+        except Exception as e:
+            logging.error("Error while importing %s : %s" % (filename, str(e)))
+
+
 class PostFileEventHandler(FileSystemEventHandler):
     def __init__(self, path, *args, **kwargs):
         self.path = path
@@ -294,11 +314,14 @@ class Importer(Daemon):
             observer.stop()
         observer.join()
 
+    def load(self):
+        pass
+
 
 def main():
     parser = argparse.ArgumentParser(description='')
 
-    parser.add_argument('action', choices=['start', 'stop', 'restart'])
+    parser.add_argument('action', choices=['start', 'stop', 'restart', 'load'])
     parser.add_argument('-d', '--debug', default=None, action="store_true",
                         help='activate the debug mode')
 
@@ -336,6 +359,8 @@ def main():
         importer.stop()
     elif action == 'restart':
         importer.restart()
+    elif action == 'load':
+        import_from_files(settings.DATA_DIR)
     else:
         return 1
 
