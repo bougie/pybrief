@@ -45,6 +45,13 @@ def show_posts_by_tag(request, tagname):
     :param tagname: the name of the tag
     :type tagname: str"""
 
-    posts = Post.objects.all().order_by('-create_date')
+    try:
+        tag = Tag.objects.get(name=tagname)
+    except Tag.DoesNotExist:
+        raise Http404
+    else:
+        posts = Post.objects.all().filter(tags=tag).order_by('-create_date')
 
-    return render_response(request, 'blog/posts_by_tag.tpl', {'posts': posts})
+        return render_response(request,
+                               'blog/posts_by_tag.tpl',
+                               {'posts': posts})
