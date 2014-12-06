@@ -233,6 +233,11 @@ def import_from_files(path):
 
 
 def delete_post(filename):
+    """Delete a post in the DB
+
+    :param filename: absolute path to the post file
+    :type filename: str"""
+
     try:
         Post.objects.get(filename=filename).delete()
     except Post.DoesNotExist:
@@ -242,6 +247,11 @@ def delete_post(filename):
 
 
 def import_post_file(filename):
+    """Add a post into the DB
+
+    :param filename: absolute path to the post file
+    :type filename: str"""
+
     bpcontent = parse_blog_file(filename)
     if bpcontent is not None:
         try:
