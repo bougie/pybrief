@@ -147,6 +147,8 @@ class Daemon:
                 pid = int(pf.read().strip())
         except IOError:
             pid = None
+        except ValueError:
+            pid = None
 
         return pid
 
