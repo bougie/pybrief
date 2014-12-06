@@ -42,7 +42,7 @@
 		</div>
 
 		<div class="blog-footer">
-			<q href="#top">Remonter</a><br />
+			<a href="#top">Remonter</a><br />
 			§§§ APPARTLAND FTW §§§
 		</div>
 
