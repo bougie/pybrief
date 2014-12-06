@@ -352,15 +352,14 @@ def main():
         return 1
 
     importer = Importer('importer',
-                        getattr(settings, 'DATA_DIR'),
-                        logdir=getattr(settings, 'LOG_DIR'),
+                        settings.DATA_DIR,
+                        logdir=settings.LOG_DIR,
                         loglevel=logger.getEffectiveLevel(),
-                        stdout=os.path.join(getattr(settings, 'LOG_DIR'),
+                        stdout=os.path.join(settings.LOG_DIR,
                                             'importer_stdout.log'),
-                        stderr=os.path.join(getattr(settings, 'LOG_DIR'),
+                        stderr=os.path.join(settings.LOG_DIR,
                                             'importer_stderr.log'),
-                        pidfile=os.path.join(getattr(settings, 'PID_DIR'),
-                                             'importer.pid'))
+                        pidfile=os.path.join(settings.PID_DIR, 'importer.pid'))
 
     action = getattr(args, 'action', None)
     if action == 'start':
