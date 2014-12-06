@@ -369,6 +369,7 @@ def main():
     elif action == 'restart':
         importer.restart()
     elif action == 'load':
+        logging.info('Importing all posts')
         import_from_files(settings.DATA_DIR)
     else:
         return 1
