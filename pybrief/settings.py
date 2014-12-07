@@ -87,6 +87,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+BLOG_AUTHOR = 'bougie'
+BLOG_DESCRIPTION = 'Le blog reference de la non culture'
+BLOG_KEYWORDS = 'blog,python,saltstack,ansible,sysadmin,django'
+
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 LOG_DIR = '/tmp'
 PID_DIR = '/tmp'

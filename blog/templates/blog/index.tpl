@@ -16,10 +16,12 @@
 	</div>
 
 	<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-		<div class="sidebar-module sidebar-module-inset">
-			<h4>About</h4>
-			<p>Kewkew tout le monde les gens</p>
-		</div>
+		{% if BLOG_DESCRIPTION %}
+			<div class="sidebar-module sidebar-module-inset">
+				<h4>About</h4>
+				<p>{{BLOG_DESCRIPTION}}</p>
+			</div>
+		{% endif %}
 
 		<div class="sidebar-module">
 			<h4>Tags</h4>
