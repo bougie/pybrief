@@ -17,7 +17,9 @@
 			<h2>Billets recents</h2>
 
 			{% for post in posts %}
-			<a href="{% url 'blog_post' post.id post.slug %}">{{post.title}}</a><br />
+			<a href="{% url 'blog_post' post.id post.slug %}" title="Le {{post.create_date|date:"d/m/Y à H:i"}} par {{post.author}}">
+				{{post.title}}
+			</a><br />
 			{% endfor %}
 		</div>
 	</div>
