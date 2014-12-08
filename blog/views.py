@@ -1,19 +1,31 @@
 from django.shortcuts import redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from core.shortcuts import render_response
 from django.core.urlresolvers import reverse
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from .models import Post, Tag
 
 
 def index(request):
     """Blog home page. Render the posts list"""
 
-    posts = Post.objects.all().order_by('-create_date')
-    tags = Tag.objects.all()
-
-    return render_response(request,
-                           'blog/index.tpl',
-                           {'posts': posts, 'tags': tags})
+    try:
+        paginator = Paginator(Post.objects.all().order_by('-create_date'), 5)
+        tags = Tag.objects.all()
+    except:
+        return HttpResponse(status=500)
+    else:
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+        finally:
+            return render_response(request,
+                                   'blog/index.tpl',
+                                   {'posts': posts, 'tags': tags})
 
 
 def show_post(request, postid, postslug=None):
@@ -47,11 +59,22 @@ def show_posts_by_tag(request, tagname):
 
     try:
         tag = Tag.objects.get(name=tagname)
+        paginator = Paginator(
+            Post.objects.all().filter(tags=tag).order_by('-create_date'),
+            5)
     except Tag.DoesNotExist:
         raise Http404
+    except:
+        return HttpResponse(status=500)
     else:
-        posts = Post.objects.all().filter(tags=tag).order_by('-create_date')
-
-        return render_response(request,
-                               'blog/posts_by_tag.tpl',
-                               {'posts': posts})
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+        finally:
+            return render_response(request,
+                                   'blog/posts_by_tag.tpl',
+                                   {'posts': posts})

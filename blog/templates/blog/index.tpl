@@ -13,6 +13,17 @@
 			{{post.content_html|safe}}
 		</div>
 		{% endfor %}
+
+		<nav>
+			<ul class="pager">
+				{% if posts.has_previous %}
+					<li><a href="?page={{posts.previous_page_number}}">&lt;- Plus récent</a></li>
+				{% endif %}
+				{% if posts.has_next %}
+					<li><a href="?page={{posts.next_page_number}}">Plus vieux -&gt;</a></li>
+				{% endif %}
+			</ul>
+		</nav>
 	</div>
 
 	<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
