@@ -13,7 +13,7 @@
 	<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
 		<div class="sidebar-module sidebar-module-inset">
 			<h4>A propos</h4>
-			Par <a href="#">{{post.author}}</a> le {{post.create_date|date:"d/m/Y à H:i"}}
+			Par <a href="{% url 'blog_posts_author' post.author %}">{{post.author}}</a> le {{post.create_date|date:"d/m/Y à H:i"}}
 		</div>
 
 		{% if post.tags.all|length > 0 %}
