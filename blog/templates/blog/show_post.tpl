@@ -16,7 +16,7 @@
 			Par <a href="#">{{post.author}}</a> le {{post.create_date|date:"d/m/Y à H:i"}}
 		</div>
 
-		{% if post.tags|length > 0 %}
+		{% if post.tags.all|length > 0 %}
 		<div class="sidebar-module sidebar-module">
 			<h4>Classé dans</h4>
 
