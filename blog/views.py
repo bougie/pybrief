@@ -78,3 +78,19 @@ def show_posts_by_tag(request, tagname):
             return render_response(request,
                                    'blog/posts_by_tag.tpl',
                                    {'posts': posts})
+
+
+def show_posts_by_author(request, author):
+    """List posts for a given author
+
+    :param tagname: the name of the author
+    :type tagname: str"""
+
+    try:
+        posts = Post.objects.filter(author=author).order_by('-create_date')
+    except Post.DoesNotExist:
+        raise Http404
+    else:
+        return render_response(request,
+                               'blog/posts_by_author.tpl',
+                               {'posts': posts})
