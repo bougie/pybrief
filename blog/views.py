@@ -8,12 +8,14 @@ from .models import Post, Tag
 def index(request):
     """Blog home page. Render the posts list"""
 
+    dates = Post.objects.datetimes('create_date', 'month', order='DESC')
+
     posts = Post.objects.all().order_by('-create_date')
     tags = Tag.objects.all()
 
     return render_response(request,
                            'blog/index.tpl',
-                           {'posts': posts, 'tags': tags})
+                           {'posts': posts, 'tags': tags, 'dates': dates})
 
 
 def show_post(request, postid, postslug=None):
@@ -70,4 +72,28 @@ def show_posts_by_author(request, author):
     else:
         return render_response(request,
                                'blog/posts_by_author.tpl',
+                               {'posts': posts})
+
+
+def show_posts_by_date(request, year, month=None):
+    """List posts for a given date
+
+    :param year: year of the date
+    :type year: str
+    :param month: month of the date
+    :type month: str"""
+
+    try:
+        if month is not None:
+            posts = Post.objects.filter(
+                create_date__year=year,
+                create_date__month=month).order_by('-create_date')
+        else:
+            posts = Post.objects.filter(
+                create_date__year=year).order_by('-create_date')
+    except Post.DoesNotExist:
+        raise Http404
+    else:
+        return render_response(request,
+                               'blog/posts_by_date.tpl',
                                {'posts': posts})

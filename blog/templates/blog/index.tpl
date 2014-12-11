@@ -30,6 +30,16 @@
 				<a href="{% url 'blog_posts_tag' tag.name %}">{{tag.name}}</a>
 			{% endfor %}
 		</div>
+
+		{% if dates|length > 0 %}
+			<div class="sidebar-module">
+				<h4>Archives</h4>
+
+				{% for date in dates %}
+					<a href="{% url 'blog_posts_archives' date.year date.month %}">{{date|date:"F Y"}}</a><br />
+				{% endfor %}
+			</div>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}
