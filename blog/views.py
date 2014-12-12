@@ -32,16 +32,14 @@ def index(request):
 
 
 def show_post(request, postid, postslug=None):
-    """Show post for a given id.
+    """Display a post for a given id
 
-    :param postid: numerical id of the post
+    :param postid: post numerical id
     :type postid: int
-    :param postslug: slug of the post
+    :param postslug: post slug
     :type postslug: str"""
 
-    #
     # Check if post exists and if the URL is well formated
-    #
     try:
         post = Post.objects.get(id=postid)
     except Post.DoesNotExist:
@@ -57,7 +55,7 @@ def show_post(request, postid, postslug=None):
 def show_posts_by_tag(request, tagname):
     """List posts for a given tag
 
-    :param tagname: the name of the tag
+    :param tagname: tag name
     :type tagname: str"""
 
     try:
@@ -86,8 +84,8 @@ def show_posts_by_tag(request, tagname):
 def show_posts_by_author(request, author):
     """List posts for a given author
 
-    :param tagname: the name of the author
-    :type tagname: str"""
+    :param author: author name
+    :type author: str"""
 
     try:
         paginator = Paginator(
@@ -114,9 +112,9 @@ def show_posts_by_author(request, author):
 def show_posts_by_date(request, year, month=None):
     """List posts for a given date
 
-    :param year: year of the date
+    :param year: year
     :type year: str
-    :param month: month of the date
+    :param month: month (can be None)
     :type month: str"""
 
     try:
