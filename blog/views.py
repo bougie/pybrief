@@ -9,6 +9,8 @@ from .models import Post, Tag
 def index(request):
     """Blog home page. Render the posts list"""
 
+    dates = Post.objects.datetimes('create_date', 'month', order='DESC')
+
     try:
         paginator = Paginator(Post.objects.all().order_by('-create_date'), 5)
         tags = Tag.objects.all()
@@ -25,7 +27,8 @@ def index(request):
         finally:
             return render_response(request,
                                    'blog/index.tpl',
-                                   {'posts': posts, 'tags': tags})
+                                   {'posts': posts, 'tags': tags,
+                                    'dates': dates})
 
 
 def show_post(request, postid, postslug=None):
@@ -87,10 +90,57 @@ def show_posts_by_author(request, author):
     :type tagname: str"""
 
     try:
-        posts = Post.objects.filter(author=author).order_by('-create_date')
+        paginator = Paginator(
+            Post.objects.filter(author=author).order_by('-create_date'),
+            5)
     except Post.DoesNotExist:
         raise Http404
+    except:
+        return HttpResponse(status=500)
     else:
-        return render_response(request,
-                               'blog/posts_by_author.tpl',
-                               {'posts': posts})
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+        finally:
+            return render_response(request,
+                                   'blog/posts_by_author.tpl',
+                                   {'posts': posts})
+
+
+def show_posts_by_date(request, year, month=None):
+    """List posts for a given date
+
+    :param year: year of the date
+    :type year: str
+    :param month: month of the date
+    :type month: str"""
+
+    try:
+        if month is not None:
+            _posts = Post.objects.filter(
+                create_date__year=year,
+                create_date__month=month).order_by('-create_date')
+        else:
+            _posts = Post.objects.filter(
+                create_date__year=year).order_by('-create_date')
+        paginator = Paginator(_posts, 5)
+    except Post.DoesNotExist:
+        raise Http404
+    except:
+        return HttpResponse(status=500)
+    else:
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+        finally:
+            return render_response(request,
+                                   'blog/posts_by_date.tpl',
+                                   {'posts': posts})
