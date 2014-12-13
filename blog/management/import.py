@@ -159,7 +159,7 @@ class Daemon:
 
         if self._getpid() is not None:
             logging.error(
-                "pidfile %s already exist. Daemon already running?\n" % (
+                "pidfile %s already exist. Daemon already running ?\n" % (
                     self.pidfile,))
             sys.exit(1)
 
@@ -176,7 +176,7 @@ class Daemon:
         pid = self._getpid()
         if pid is None:
             logging.error(
-                "pidfile %s does not exist. Daemon not running?\n" % (
+                "pidfile %s does not exist. Daemon not running ?\n" % (
                     self.pidfile,))
             return  # not an error in a restart
 
@@ -216,7 +216,7 @@ def import_from_file(filename):
 
 
 def delete_from_file(filename):
-    """Delete a post in the BDD for a gevin filename"""
+    """Delete a post in the BDD for a given filename"""
 
     try:
         delete_post(filename)
