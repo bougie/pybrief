@@ -79,6 +79,11 @@ class PostList(ListView):
         else:
             return Post.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super(PostList, self).get_context_data(**kwargs)
+        context.update(self.kwargs)
+        return context
+
     def render_to_response(self, context, **response_kwargs):
         return render_response(self.request, self.get_template_names(),
                                context, **response_kwargs)

@@ -1,6 +1,14 @@
 {% extends 'base.tpl' %}
 
 {% block content %}
+{% if submodule == 'tag' %}
+	<h2 class="blog-subtitle">Billets taggés '{{tagname}}'</h2>
+{% elif submodule == 'author' %}
+	<h2 class="blog-subtitle">Billets écrits par {{author}}</h2>
+{% elif submodule == 'archives' %}
+	<h2 class="blog-subtitle">Billets du {{month}}/{{year}}</h2>
+{% endif %}
+
 {% for post in posts %}
 	<div class="row blog-main blog-post blog-item-line">
 		<div class="col-sm-offset-1 col-sm-2">

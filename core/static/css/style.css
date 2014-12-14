@@ -91,6 +91,10 @@ h2 a, h2 a:hover
 	font-size: 60px;
 	font-weight: normal;
 }
+.blog-subtitle
+{
+	margin-bottom: 20px;
+}
 .blog-description
 {
 	font-size: 20px;
