@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from core.shortcuts import render_response
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse
+from django.views.generic import ListView
 from .models import Post, Tag
 
 
@@ -52,93 +53,28 @@ def show_post(request, postid, postslug=None):
     return render_response(request, 'blog/show_post.tpl', {'post': post})
 
 
-def show_posts_by_tag(request, tagname):
-    """List posts for a given tag
+class PostList(ListView):
+    context_object_name = 'posts'
+    template_name = 'blog/post_list.tpl'
+    paginate_by = 5
 
-    :param tagname: tag name
-    :type tagname: str"""
-
-    try:
-        tag = Tag.objects.get(name=tagname)
-        paginator = Paginator(
-            Post.objects.all().filter(tags=tag).order_by('-create_date'),
-            5)
-    except Tag.DoesNotExist:
-        raise Http404
-    except:
-        return HttpResponse(status=500)
-    else:
-        page = request.GET.get('page')
-        try:
-            posts = paginator.page(page)
-        except PageNotAnInteger:
-            posts = paginator.page(1)
-        except EmptyPage:
-            posts = paginator.page(paginator.num_pages)
-        finally:
-            return render_response(request,
-                                   'blog/posts_by_tag.tpl',
-                                   {'posts': posts})
-
-
-def show_posts_by_author(request, author):
-    """List posts for a given author
-
-    :param author: author name
-    :type author: str"""
-
-    try:
-        paginator = Paginator(
-            Post.objects.filter(author=author).order_by('-create_date'),
-            5)
-    except Post.DoesNotExist:
-        raise Http404
-    except:
-        return HttpResponse(status=500)
-    else:
-        page = request.GET.get('page')
-        try:
-            posts = paginator.page(page)
-        except PageNotAnInteger:
-            posts = paginator.page(1)
-        except EmptyPage:
-            posts = paginator.page(paginator.num_pages)
-        finally:
-            return render_response(request,
-                                   'blog/posts_by_author.tpl',
-                                   {'posts': posts})
-
-
-def show_posts_by_date(request, year, month=None):
-    """List posts for a given date
-
-    :param year: year
-    :type year: str
-    :param month: month (can be None)
-    :type month: str"""
-
-    try:
-        if month is not None:
-            _posts = Post.objects.filter(
-                create_date__year=year,
-                create_date__month=month).order_by('-create_date')
+    def get_queryset(self):
+        sub = self.kwargs['submodule']
+        if sub == 'tag':
+            tag = Tag.objects.get(name=self.kwargs['tagname'])
+            return Post.objects.all().filter(tags=tag).order_by('-create_date')
+        elif sub == 'author':
+            return Post.objects.filter(
+                author=self.kwargs['author']).order_by('-create_date')
+        elif sub == 'archives':
+            year = self.kwargs.get('year', None)
+            month = self.kwargs.get('month', None)
+            if month is not None:
+                return Post.objects.filter(
+                    create_date__year=year,
+                    create_date__month=month).order_by('-create_date')
+            else:
+                return Post.objects.filter(
+                    create_date__year=year).order_by('-create_date')
         else:
-            _posts = Post.objects.filter(
-                create_date__year=year).order_by('-create_date')
-        paginator = Paginator(_posts, 5)
-    except Post.DoesNotExist:
-        raise Http404
-    except:
-        return HttpResponse(status=500)
-    else:
-        page = request.GET.get('page')
-        try:
-            posts = paginator.page(page)
-        except PageNotAnInteger:
-            posts = paginator.page(1)
-        except EmptyPage:
-            posts = paginator.page(paginator.num_pages)
-        finally:
-            return render_response(request,
-                                   'blog/posts_by_date.tpl',
-                                   {'posts': posts})
+            return Post.objects.all()
