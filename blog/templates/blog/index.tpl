@@ -8,7 +8,10 @@
 			<h2 class="blog-post-title">
 				<a href="{% url 'blog_post' post.id post.slug %}">{{post.title}}</a>
 			</h2>
-			<p class="blog-post-meta">le {{post.create_date|date:"d/m/Y à H:i"}} par <a href="{% url 'blog_posts_author' post.author %}">{{post.author}}</a></p>
+			<p class="blog-post-meta">
+				le {{post.create_date|date:"d/m/Y à H:i"}} par <a href="{% url 'blog_posts_author' post.author %}">{{post.author}}</a><br />
+				tags: {% for tag in post.tags.all %}<a href="{% url 'blog_posts_tag' tag.name %}">{{tag.name}}</a>&nbsp;{% endfor %}
+			</p>
 
 			{{post.content_html|safe}}
 		</div>
