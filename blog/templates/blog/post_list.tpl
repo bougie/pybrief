@@ -4,7 +4,7 @@
 {% for post in posts %}
 	<div class="row blog-main blog-post blog-item-line">
 		<div class="col-sm-offset-1 col-sm-2">
-			<p class="blog-post-meta" style="text-align: center;">
+			<p class="blog-post-meta text-center">
 				<a href="{% url 'blog_posts_author' post.author %}">{{post.author}}</a></br >
 				le {{post.create_date|date:"d/m/Y à H:i"}}
 			</p>
