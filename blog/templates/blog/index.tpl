@@ -4,7 +4,7 @@
 <div class="row">
 	<div class="col-sm-10 blog-main">
 		{% for post in posts %}
-		<div class="blog-post blog-item-line">
+		<div class="blog-post">
 			<h2 class="blog-post-title">
 				<a href="{% url 'blog_post' post.id post.slug %}">{{post.title}}</a>
 			</h2>
