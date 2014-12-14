@@ -86,7 +86,7 @@ h2 a, h2 a:hover
 }
 .blog-title
 {
-	margin-top: 30px;
+	margin-top: 15px;
 	margin-bottom: 0;
 	font-size: 60px;
 	font-weight: normal;
@@ -131,7 +131,7 @@ h2 a, h2 a:hover
  */
 .blog-post
 {
-	margin-bottom: 60px;
+	margin-bottom: 40px;
 }
 .blog-post-title
 {
@@ -142,6 +142,11 @@ h2 a, h2 a:hover
 {
 	margin-bottom: 20px;
 	color: #999;
+}
+.blog-item-line
+{
+	border-top: 1px solid #999;
+	padding-top: 40px;
 }
 
 /*
