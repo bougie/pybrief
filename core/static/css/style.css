@@ -27,11 +27,11 @@ h2 a, h2 a:hover
 /*
  * Override Bootstrap's default container.
  */
-@media (min-width: 1200px)
+@media
 {
 	.container
 	{
-		width: 970px;
+		width: 96%;
 	}
 }
 

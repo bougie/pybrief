@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-	<div class="col-sm-8 blog-main">
+	<div class="col-sm-10 blog-main">
 		{% for post in posts %}
 		<div class="blog-post">
 			<h2 class="blog-post-title">
@@ -26,7 +26,7 @@
 		</nav>
 	</div>
 
-	<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+	<div class="col-sm-2 blog-sidebar">
 		{% if BLOG_DESCRIPTION %}
 			<div class="sidebar-module sidebar-module-inset">
 				<h4>About</h4>
