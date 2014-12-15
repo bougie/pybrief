@@ -11,7 +11,7 @@
 
 {% for post in posts %}
 	<div class="row blog-main blog-post blog-item-line">
-		<div class="col-sm-offset-1 col-sm-2">
+		<div class="col-sm-2">
 			<p class="blog-post-meta text-center">
 				<a href="{% url 'blog_posts_author' post.author %}">{{post.author}}</a></br >
 			</p>
