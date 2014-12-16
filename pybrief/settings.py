@@ -94,3 +94,6 @@ BLOG_KEYWORDS = 'blog,python,saltstack,ansible,sysadmin,django'
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 LOG_DIR = '/tmp'
 PID_DIR = '/tmp'
+
+NB_POSTS = 5
+NB_FULL_POSTS = 5

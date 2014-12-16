@@ -4,6 +4,7 @@ from core.shortcuts import render_response
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse
 from django.views.generic import ListView
+from django.conf import settings
 from .models import Post, Tag
 
 
@@ -13,7 +14,9 @@ def index(request):
     dates = Post.objects.datetimes('create_date', 'month', order='DESC')
 
     try:
-        paginator = Paginator(Post.objects.all().order_by('-create_date'), 5)
+        paginator = Paginator(
+            Post.objects.all().order_by('-create_date'),
+            settings.NB_FULL_POSTS)
         tags = Tag.objects.all()
     except:
         return HttpResponse(status=500)
@@ -56,7 +59,7 @@ def show_post(request, postid, postslug=None):
 class PostList(ListView):
     context_object_name = 'posts'
     template_name = 'blog/post_list.tpl'
-    paginate_by = 5
+    paginate_by = settings.NB_POSTS
 
     def get_queryset(self):
         sub = self.kwargs['submodule']
