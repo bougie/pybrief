@@ -1,4 +1,5 @@
 {% extends 'base.tpl' %}
+{% load staticfiles %}
 
 {% block content %}
 {% if submodule == 'tag' %}
@@ -13,7 +14,8 @@
 	<div class="row blog-main blog-post blog-item-line">
 		<div class="col-sm-2">
 			<p class="blog-post-meta text-center">
-				<a href="{% url 'blog_posts_author' post.author %}">{{post.author}}</a></br >
+				<img src="{% static 'img/noavatar.png' %}" alt="noavatar" />
+				<a href="{% url 'blog_posts_author' post.author %}">{{post.author}}</a>
 			</p>
 		</div>
 		<div class="col-sm-9">
