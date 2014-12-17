@@ -24,7 +24,7 @@
 			</h2>
 			<p class="blog-post-meta">
 				le {{post.create_date|date:"d/m/Y à H:i"}}<br />
-				tags: {% for tag in post.tags.all %}<a href="{% url 'blog_posts_tag' tag.name %}">{{tag.name}}</a>&nbsp;{% endfor %}
+				<span class="glyphicon glyphicon-tags"></span>&nbsp;{% for tag in post.tags.all %}<a href="{% url 'blog_posts_tag' tag.name %}">{{tag.name}}</a>&nbsp;{% endfor %}
 			</p>
 
 			{{post.description_html|safe}}

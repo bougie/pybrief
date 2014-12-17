@@ -10,7 +10,7 @@
 			</h2>
 			<p class="blog-post-meta">
 				le {{post.create_date|date:"d/m/Y à H:i"}} par <a href="{% url 'blog_posts_author' post.author %}">{{post.author}}</a><br />
-				tags: {% for tag in post.tags.all %}<a href="{% url 'blog_posts_tag' tag.name %}">{{tag.name}}</a>&nbsp;{% endfor %}
+				<span class="glyphicon glyphicon-tags"></span>&nbsp;{% for tag in post.tags.all %}<a href="{% url 'blog_posts_tag' tag.name %}">{{tag.name}}</a>&nbsp;{% endfor %}
 			</p>
 
 			{{post.content_html|safe}}
@@ -20,10 +20,10 @@
 		<nav>
 			<ul class="pager">
 				{% if posts.has_previous %}
-					<li><a href="?page={{posts.previous_page_number}}">&lt;- Plus récent</a></li>
+					<li><a href="?page={{posts.previous_page_number}}"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Plus recent</a></li>
 				{% endif %}
 				{% if posts.has_next %}
-					<li><a href="?page={{posts.next_page_number}}">Plus vieux -&gt;</a></li>
+					<li><a href="?page={{posts.next_page_number}}">Plus vieux&nbsp;<span class="glyphicon glyphicon-arrow-right"></span></a></li>
 				{% endif %}
 			</ul>
 		</nav>
@@ -32,13 +32,13 @@
 	<div class="col-sm-2 blog-sidebar">
 		{% if BLOG_DESCRIPTION %}
 			<div class="sidebar-module sidebar-module-inset">
-				<h4>About</h4>
+				<h4><span class="glyphicon glyphicon-info-sign"></span>&nbsp;About</h4>
 				<p>{{BLOG_DESCRIPTION}}</p>
 			</div>
 		{% endif %}
 
 		<div class="sidebar-module">
-			<h4>Tags</h4>
+			<h4><span class="glyphicon glyphicon-tags"></span>&nbsp;Tags</h4>
 
 			{% for tag in tags %}
 				<a href="{% url 'blog_posts_tag' tag.name %}">{{tag.name}}</a>
@@ -47,7 +47,7 @@
 
 		{% if dates|length > 0 %}
 			<div class="sidebar-module">
-				<h4>Archives</h4>
+				<h4><span class="glyphicon glyphicon-calendar"></span>&nbsp;Archives</h4>
 
 				{% for date in dates %}
 					<a href="{% url 'blog_posts_archives' date.year date.month %}">{{date|date:"F Y"}}</a><br />

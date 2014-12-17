@@ -20,7 +20,7 @@
 
 		{% if post.tags.all|length > 0 %}
 		<div class="sidebar-module sidebar-module">
-			<h4>Classé dans</h4>
+			<h4><span class="glyphicon glyphicon-tags"></span>&nbsp;Tags</h4>
 
 			{% for tag in post.tags.all %}
 				<a href="{% url 'blog_posts_tag' tag.name %}">{{tag.name}}</a>
