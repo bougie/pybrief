@@ -57,6 +57,8 @@ def show_post(request, postid, postslug=None):
 
 
 class PostList(ListView):
+    """List posts for a given filter paste in URL"""
+
     context_object_name = 'posts'
     template_name = 'blog/post_list.tpl'
     paginate_by = settings.NB_POSTS
