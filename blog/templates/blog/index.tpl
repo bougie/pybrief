@@ -20,10 +20,10 @@
 		<nav>
 			<ul class="pager">
 				{% if posts.has_previous %}
-					<li><a href="?page={{posts.previous_page_number}}"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Plus recent</a></li>
+					<li><a href="?page={{posts.previous_page_number}}"><span class="glyphicon glyphicon-arrow-left"></span></a></li>
 				{% endif %}
 				{% if posts.has_next %}
-					<li><a href="?page={{posts.next_page_number}}">Plus vieux&nbsp;<span class="glyphicon glyphicon-arrow-right"></span></a></li>
+					<li><a href="?page={{posts.next_page_number}}"><span class="glyphicon glyphicon-arrow-right"></span></a></li>
 				{% endif %}
 			</ul>
 		</nav>
