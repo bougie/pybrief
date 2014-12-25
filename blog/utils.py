@@ -25,7 +25,8 @@ def save_post_file(filename, **kwargs):
     """Create or update the post file
 
     :param filename: absolute path to the file
-    :type filename: str"""
+    :type filename: str
+    :param kwargs: posts field (headers, content)"""
 
     filecontent = ""
 
