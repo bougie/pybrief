@@ -14,7 +14,9 @@
 	<div class="col-sm-2 blog-sidebar">
 		<div class="sidebar-module sidebar-module-inset">
 			<h4>A propos</h4>
-			<img src="{% static 'img/noavatar.png' %}" alt="noavatar" /><br />
+			<div class="text-center">
+				<img src="{% static 'img/noavatar.png' %}" alt="noavatar" /><br />
+			</div>
 			Par <a href="{% url 'blog_posts_author' post.author %}">{{post.author}}</a> le {{post.create_date|date:"d/m/Y à H:i"}}
 		</div>
 
