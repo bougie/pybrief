@@ -13,7 +13,7 @@
 
 	<div class="col-sm-2 blog-sidebar">
 		<div class="sidebar-module sidebar-module-inset">
-			<h4>A propos</h4>
+			<h4><span class="glyphicon glyphicon-info-sign"></span>&nbsp;A propos</h4>
 			<div class="text-center">
 				<img src="{% static 'img/noavatar.png' %}" alt="noavatar" /><br />
 			</div>
