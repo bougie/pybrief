@@ -32,7 +32,7 @@
 	<div class="col-sm-2 blog-sidebar">
 		{% if BLOG_DESCRIPTION %}
 			<div class="sidebar-module sidebar-module-inset">
-				<h4><span class="glyphicon glyphicon-info-sign"></span>&nbsp;About</h4>
+				<h4><span class="glyphicon glyphicon-info-sign"></span>&nbsp;A propos</h4>
 				<p>{{BLOG_DESCRIPTION}}</p>
 			</div>
 		{% endif %}
