@@ -87,6 +87,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+BLOG_TITLE = 'La cave de bougie'
+BLOG_SUBTITLE = 'Etre saoul sans boire une goutte d\'alcool'
 BLOG_AUTHOR = 'bougie'
 BLOG_DESCRIPTION = 'Le blog reference de la non culture'
 BLOG_KEYWORDS = 'blog,python,saltstack,ansible,sysadmin,django'

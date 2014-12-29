@@ -14,7 +14,9 @@ def global_vars(request):
     except:
         tplvars['nav_current_module'] = 'index'
 
-    for item in ['BLOG_AUTHOR', 'BLOG_DESCRIPTION', 'BLOG_KEYWORDS']:
+    items = ['BLOG_TITLE', 'BLOG_SUBTITLE', 'BLOG_AUTHOR', 'BLOG_DESCRIPTION',
+             'BLOG_KEYWORDS']
+    for item in items:
         tplvars[item] = getattr(settings, item, None)
 
     return tplvars

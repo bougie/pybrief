@@ -43,9 +43,8 @@
 
 		<div class="container">
 			<div class="blog-header">
-				<h1 class="blog-title"><span class="glyphicon glyphicon-home"></span>
-La cave de bougie</h1>
-				<p class="lead blog-description">Etre saoul sans une goutte d'alcool</p>
+				<h1 class="blog-title"><span class="glyphicon glyphicon-home"></span>&nbsp;{{BLOG_TITLE}}</h1>
+				<p class="lead blog-description">{{BLOG_SUBTITLE}}</p>
 			</div>
 
 			{% block content %}
