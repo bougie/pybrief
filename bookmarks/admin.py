@@ -8,6 +8,6 @@ class LinkAdmin(admin.ModelAdmin):
 
     form = LinkForm
     fields = LinkForm.Meta.fields
-    list_display = ('name', 'url')
+    list_display = ('name', 'title', 'url', 'insert_date', 'update_date')
 
 admin.site.register(Link, LinkAdmin)

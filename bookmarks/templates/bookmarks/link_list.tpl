@@ -3,12 +3,15 @@
 
 {% block content %}
 <table class="table table-striped">
-	<tr>
-		<th>Lien</th>
-	</tr>
 	{% for link in links %}
 	<tr>
-		<td><a href="{{link.url}}">{{link.name}}</a></td>
+		<td>
+			{% if link.name %}
+			<a href="{{link.url}}">{{link.name}}</a>
+			{% else %}
+			<a href="{{link.url}}">{{link.title}}</a>
+			{% endif %}
+		</td>
 	</tr>
 	{% endfor %}
 </table>
