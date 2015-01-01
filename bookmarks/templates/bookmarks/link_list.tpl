@@ -16,9 +16,11 @@
 				<div class="">by {{link.domain}}</div>
 				{% endif %}
 			</div>
+			{% if link.tags.all|length > 0 %}
 			<div class="text-right">
-				#link #blabla
+				{% for tag in link.tags.all %}{{tag.name}}{% endfor %}
 			</div>
+			{% endif %}
 		</td>
 	</tr>
 	{% endfor %}
