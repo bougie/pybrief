@@ -9,8 +9,10 @@
 			<div>
 				{% if link.name %}
 				<a href="{{link.url}}">{{link.name}}</a>
-				{% else %}
+				{% elif link.title %}
 				<a href="{{link.url}}">{{link.title}}</a>
+				{% else %}
+				<a href="{{link.url}}">{{link.url}}</a>
 				{% endif %}
 				{% if link.domain %}
 				<div class="">by {{link.domain}}</div>
