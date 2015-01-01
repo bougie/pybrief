@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
-<table class="table table-striped">
+<table class="table">
 	{% for link in links %}
 	<tr>
 		<td>
