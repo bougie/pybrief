@@ -43,3 +43,26 @@ def get_title_link(url):
         title = None
     finally:
         return title
+
+
+def get_domain_link(url):
+    domain = None
+
+    try:
+        tpattern = re.search(
+            "(https?://)?(.*/)?(.*)",
+            url,
+            flags=re.IGNORECASE | re.DOTALL)
+        if tpattern is not None:
+            if tpattern.group(2) is not None:
+                domain = tpattern.group(2)
+            else:
+                domain = tpattern.group(3)
+
+            # remove trailing slash
+            if domain.endswith('/'):
+                domain = domain[:-1]
+    except:
+        domain = None
+    finally:
+        return domain

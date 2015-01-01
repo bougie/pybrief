@@ -6,11 +6,19 @@
 	{% for link in links %}
 	<tr>
 		<td>
-			{% if link.name %}
-			<a href="{{link.url}}">{{link.name}}</a>
-			{% else %}
-			<a href="{{link.url}}">{{link.title}}</a>
-			{% endif %}
+			<div>
+				{% if link.name %}
+				<a href="{{link.url}}">{{link.name}}</a>
+				{% else %}
+				<a href="{{link.url}}">{{link.title}}</a>
+				{% endif %}
+				{% if link.domain %}
+				<div class="">by {{link.domain}}</div>
+				{% endif %}
+			</div>
+			<div class="text-right">
+				#link #blabla
+			</div>
 		</td>
 	</tr>
 	{% endfor %}
