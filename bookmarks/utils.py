@@ -10,11 +10,12 @@ def get_content_type(url):
     :param url: url you which get the content type
     :type url: str"""
 
-    title = None
     content_type = None
 
     try:
-        connection = http.client.HTTPConnection(get_domain_link(url))
+        connection = http.client.HTTPConnection(
+            get_domain_link(url),
+            timeout=2)
         connection.request("HEAD", '/')
         response = connection.getresponse()
         if response is not None:
@@ -40,7 +41,7 @@ def get_title_link(url):
             req = urllib.request.Request(url)
             req.add_header('User-agent', 'Mozilla/5.0')
 
-            response = urllib.request.urlopen(req)
+            response = urllib.request.urlopen(req, timeout=2)
             try:
                 response_charset = response.getheader(
                     'Content-Type').split(';')[1].split('=')[1]
