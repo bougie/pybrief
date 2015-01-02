@@ -26,7 +26,7 @@ def get_title_link(url):
         content = str(response.read(), response_charset)
 
         tpattern = re.search(
-            '<head.*>.*<title>(.*)</title>.*</head>',
+            '<head.*>.*<title.*>(.*)</title>.*</head>',
             content,
             flags=re.IGNORECASE | re.DOTALL
         )
