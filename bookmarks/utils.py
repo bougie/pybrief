@@ -1,6 +1,30 @@
 import re
 import urllib.request
+import http.client
 import html.parser
+
+
+def get_content_type(url):
+    """Get the content type of a page
+
+    :param url: url you which get the content type
+    :type url: str"""
+
+    title = None
+    content_type = None
+
+    try:
+        connection = http.client.HTTPConnection(get_domain_link(url))
+        connection.request("HEAD", '/')
+        response = connection.getresponse()
+        if response is not None:
+            content_type = response.getheader('Content-Type')
+            if content_type is not None:
+                content_type = content_type.split(';')[0]
+    except:
+        content_type = None
+    finally:
+        return content_type
 
 
 def get_title_link(url):
@@ -11,38 +35,39 @@ def get_title_link(url):
 
     title = None
 
-    try:
-        req = urllib.request.Request(url)
-        req.add_header('User-agent', 'Mozilla/5.0')
-
-        response = urllib.request.urlopen(req)
+    if get_content_type(url) in ['text/html']:
         try:
-            response_charset = response.getheader(
-                'Content-Type').split(';')[1].split('=')[1]
-        except:
-            # Charset does not exists in the Content-Type header
-            # Using UTF-8 charset by default
-            response_charset = 'UTF-8'
-        content = str(response.read(), response_charset)
+            req = urllib.request.Request(url)
+            req.add_header('User-agent', 'Mozilla/5.0')
 
-        tpattern = re.search(
-            '<head.*>.*<title.*>(.*)</title>.*</head>',
-            content,
-            flags=re.IGNORECASE | re.DOTALL
-        )
+            response = urllib.request.urlopen(req)
+            try:
+                response_charset = response.getheader(
+                    'Content-Type').split(';')[1].split('=')[1]
+            except:
+                # Charset does not exists in the Content-Type header
+                # Using UTF-8 charset by default
+                response_charset = 'UTF-8'
+            content = str(response.read(), response_charset)
 
-        if tpattern is not None:
-            # Remove useless spaces and convert HTML entities
-            # into human readable ones
-            ti = map(lambda s: s.translate(s.maketrans("\n\t\r", "   ")),
-                     tpattern.group(1).split("\n"))
-            h = html.parser.HTMLParser()
+            tpattern = re.search(
+                '<head.*>.*<title.*>(.*)</title>.*</head>',
+                content,
+                flags=re.IGNORECASE | re.DOTALL
+            )
 
-            title = h.unescape(" ".join(ti).strip())
-    except Exception:
-        title = None
-    finally:
-        return title
+            if tpattern is not None:
+                # Remove useless spaces and convert HTML entities
+                # into human readable ones
+                ti = map(lambda s: s.translate(s.maketrans("\n\t\r", "   ")),
+                         tpattern.group(1).split("\n"))
+                h = html.parser.HTMLParser()
+
+                title = h.unescape(" ".join(ti).strip())
+        except Exception:
+            title = None
+
+    return title
 
 
 def get_domain_link(url):
