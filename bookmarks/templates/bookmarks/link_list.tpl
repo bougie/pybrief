@@ -5,6 +5,9 @@
 <table class="table">
 	{% for link in links %}
 	<tr>
+		<td class="text-center">
+			<img src="{% static 'img/nothumb.png' %}" alt="nothumb" />
+		</td>
 		<td>
 			<div>
 				{% if link.name %}
