@@ -168,3 +168,12 @@ h2 a, h2 a:hover
 {
 	margin-bottom: 0;
 }
+
+.link-title
+{
+	font-size: 18px;
+}
+.link-description
+{
+	color: #999;
+}

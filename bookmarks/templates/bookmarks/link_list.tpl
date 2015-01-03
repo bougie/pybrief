@@ -8,14 +8,14 @@
 		<td>
 			<div>
 				{% if link.name %}
-				<a href="{{link.url}}">{{link.name}}</a>
+				<a href="{{link.url}}" class="link-title">{{link.name}}</a>
 				{% elif link.title %}
-				<a href="{{link.url}}">{{link.title}}</a>
+				<a href="{{link.url}}" class="link-title">{{link.title}}</a>
 				{% else %}
-				<a href="{{link.url}}">{{link.url}}</a>
+				<a href="{{link.url}}" class="link-title">{{link.url}}</a>
 				{% endif %}
 				{% if link.domain %}
-				<div class="">by {{link.domain}}</div>
+				<div class="link-description">by {{link.domain}}</div>
 				{% endif %}
 			</div>
 			{% if link.tags.all|length > 0 %}
