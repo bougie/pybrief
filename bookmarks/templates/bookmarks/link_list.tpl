@@ -23,7 +23,9 @@
 			</div>
 			{% if link.tags.all|length > 0 %}
 			<div class="text-right">
-				{% for tag in link.tags.all %}{{tag.name}}{% endfor %}
+				{% for tag in link.tags.all %}
+					<span class="tag_box">{{tag.name}}</span>
+				{% endfor %}
 			</div>
 			{% endif %}
 		</td>
