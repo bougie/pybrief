@@ -12,7 +12,7 @@ class LinkForm(forms.ModelForm):
 
     class Meta:
         model = Link
-        fields = ['name', 'url', 'tags']
+        fields = ['url', 'name', 'tags']
 
     def save(self, commit=True):
         """Save the new (or modified) link.

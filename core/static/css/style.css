@@ -23,6 +23,10 @@ h2 a, h2 a:hover
 	color: #333;
 	font-weight: bold;
 }
+.send
+{
+	margin-bottom: 20px;
+}
 
 /*
  * Override Bootstrap's default container.
