@@ -88,6 +88,7 @@ def get_domain_link(url):
             # remove trailing slash
             if domain.endswith('/'):
                 domain = domain[:-1]
+            domain = domain.split('/')[0]
     except:
         domain = None
     finally:
