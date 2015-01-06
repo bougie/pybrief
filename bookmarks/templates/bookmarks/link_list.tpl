@@ -63,8 +63,17 @@
 		</nav>
 	</div>
 	<div class="col-sm-2">
-		<div class="send text-right">
-			<a href="#" id="add-bookmark-link" class="btn btn-default">Nouveau marque-page</a>
+		<div class="sidebar-module">
+			<div class="text-right">
+				<a href="#" id="add-bookmark-link" class="btn btn-default">Nouveau marque-page</a>
+			</div>
+		</div>
+		<div class="sidebar-module">
+			<h4><span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;Tags</h4>
+
+			{% for tag in tags %}
+				<a href="{% url 'bookmarks_links_tag' tag.name %}">{{tag.name}}</a>
+			{% endfor %}
 		</div>
 	</div>
 </div>
