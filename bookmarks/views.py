@@ -3,6 +3,7 @@ from django.views.generic import ListView
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from .models import Link
 from .forms import LinkForm
 
@@ -12,6 +13,7 @@ class LinkList(ListView):
 
     context_object_name = 'links'
     template_name = 'bookmarks/link_list.tpl'
+    paginate_by = settings.NB_LINKS
 
     def get_queryset(self):
         return Link.objects.all()

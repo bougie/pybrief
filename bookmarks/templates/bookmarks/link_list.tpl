@@ -50,6 +50,17 @@
 			</tr>
 			{% endfor %}
 		</table>
+
+		<nav>
+			<ul class="pager">
+				{% if page_obj.has_previous %}
+					<li><a href="?page={{page_obj.previous_page_number}}"><span class="glyphicon glyphicon-arrow-left"></span></a></li>
+				{% endif %}
+				{% if page_obj.has_next %}
+					<li><a href="?page={{page_obj.next_page_number}}"><span class="glyphicon glyphicon-arrow-right"></span></a></li>
+				{% endif %}
+			</ul>
+		</nav>
 	</div>
 	<div class="col-sm-2">
 		<div class="send text-right">

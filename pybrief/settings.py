@@ -100,3 +100,4 @@ PID_DIR = '/tmp'
 
 NB_POSTS = 5
 NB_FULL_POSTS = 5
+NB_LINKS = 25
