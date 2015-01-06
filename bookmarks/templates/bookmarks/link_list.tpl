@@ -42,7 +42,7 @@
 					{% if link.tags.all|length > 0 %}
 					<div class="text-right">
 						{% for tag in link.tags.all %}
-							<span class="tag_box">{{tag.name}}</span>
+							<a class="tag_box" href="{% url 'bookmarks_links_tag' tag.name %}">{{tag.name}}</a>
 						{% endfor %}
 					</div>
 					{% endif %}
