@@ -39,6 +39,8 @@ class LinkList(ListView):
 
 @require_http_methods(["POST"])
 def add_link(request):
+    """Add a link"""
+
     form = LinkForm(request.POST)
     try:
         if form.is_valid():
