@@ -1,7 +1,7 @@
 from core.shortcuts import render_response
 from django.views.generic import ListView
 from django.views.decorators.http import require_http_methods
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from core.models import Tag
@@ -46,6 +46,6 @@ def add_link(request):
         if form.is_valid():
             form.save()
     except:
-        pass
+        return HttpResponse(status=500)
     finally:
         return HttpResponseRedirect(reverse('bookmarks_index'))
