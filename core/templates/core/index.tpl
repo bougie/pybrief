@@ -1,4 +1,5 @@
 {% extends 'base.tpl' %}
+{% load truncatelink %}
 
 {% block content %}
 	{% if post %}
@@ -30,9 +31,9 @@
 				{% if link.name %}
 					{{link.name}}
 				{% elif link.title %}
-					{{link.title}}
+					{{link.title|truncatelink:"90"}}
 				{% elif link.url %}
-					{{link.url}}
+					{{link.url|truncatelink:"90"}}
 				{% endif %}
 			</a><br />
 			{% endfor %}
