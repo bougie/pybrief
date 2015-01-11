@@ -5,6 +5,13 @@ register = template.Library()
 
 @register.filter
 def truncatelink(link, trunc_len=69):
+    """truncate link (add [...] in the middle)
+
+    :param link: link to truncate
+    :type link: str
+    :param trunc_len: max link length
+    :type trunc_len: integer"""
+
     try:
         trunc_len = int(trunc_len)
     except:
