@@ -38,9 +38,9 @@
 						<a class="blog-nav-item" href="{% url 'blog_index' %}">Blog</a>
 					{% endif %}
 					{% if nav_current_module == 'bookmarks' %}
-						<a class="blog-nav-item active" href="{% url 'bookmarks_index' %}">Bookmarks</a>
+						<a class="blog-nav-item active" href="{% url 'bookmarks_index' %}">Marque-pages</a>
 					{% else %}
-						<a class="blog-nav-item" href="{% url 'bookmarks_index' %}">Bookmarks</a>
+						<a class="blog-nav-item" href="{% url 'bookmarks_index' %}">Marque-pages</a>
 					{% endif %}
 				</nav>
 			</div>
