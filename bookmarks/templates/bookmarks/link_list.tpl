@@ -4,7 +4,7 @@
 {% block content %}
 <div class="row">
 	<div class="col-sm-10">
-		<form action="{% url 'bookmarks_add' %}" method="POST" class="form-horizontal" style="display: none;" id="add-bookmark">
+		<form action="{% url 'bookmarks_add' %}" method="POST" class="form-horizontal" style="display: none;" id="form-bookmark">
 			{% csrf_token %}
 			{% for field in form %}
 			<div class="form-group">
@@ -16,7 +16,8 @@
 			{% endfor %}
 
 			<div class="send text-right">
-				<button type="submit" class="btn btn-default">Ajouter</button>
+				<button type="submit" class="btn btn-primary">Valider</button>
+				<button type="button" class="btn btn-cancel" id="btn-cancel">Annuler</button>
 			</div>
 		</form>
 
@@ -35,6 +36,9 @@
 						{% else %}
 						<a href="{{link.url}}" class="link-title">{{link.url}}</a>
 						{% endif %}
+
+						<a href="#" class="btn btn-default btn-xs edit-link" style="visibility: visible;" id="link-id-{{link.id}}"><span class="glyphicon glyphicon-edit"></span></a>
+
 						{% if link.domain %}
 						<div class="link-description">by {{link.domain}}</div>
 						{% endif %}

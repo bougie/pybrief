@@ -1,7 +1,7 @@
 from core.shortcuts import render_response
 from django.views.generic import ListView
 from django.views.decorators.http import require_http_methods
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from core.models import Tag
@@ -37,15 +37,40 @@ class LinkList(ListView):
                                context, **response_kwargs)
 
 
-@require_http_methods(["POST"])
-def add_link(request):
-    """Add a link"""
+@require_http_methods(["GET", "POST"])
+def form_link(request, linkid=None):
+    """Add or edit a link"""
 
-    form = LinkForm(request.POST)
-    try:
-        if form.is_valid():
-            form.save()
-    except:
-        return HttpResponse(status=500)
-    finally:
-        return HttpResponseRedirect(reverse('bookmarks_index'))
+    if request.method == "POST":
+        try:
+            if linkid is not None:
+                form = LinkForm(request.POST,
+                                instance=Link.objects.get(id=linkid))
+            else:
+                form = LinkForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+        except Exception as e:
+            return HttpResponse(status=500)
+        else:
+            return HttpResponseRedirect(reverse('bookmarks_index'))
+    elif request.method == "GET" and request.is_ajax():
+        try:
+            link = Link.objects.get(id=linkid)
+        except Link.DoesNotExist:
+            return HttpResponse(status=404)
+        except:
+            return HttpResponse(status=500)
+        else:
+            return JsonResponse({
+                'form_action': reverse('bookmarks_edit', args=[linkid]),
+                'form_method': 'POST',
+                'link': {
+                    'url': link.url,
+                    'name': link.name,
+                    'tags': ','.join([_.name for _ in link.tags.all()])
+                }
+            })
+    else:
+        return HttpResponse(status=405)
