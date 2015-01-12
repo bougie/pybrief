@@ -30,6 +30,13 @@ class LinkList(ListView):
         context['tags'] = Tag.objects.all()
         context['form'] = LinkForm()
 
+        if len(settings.SHARE_LINK) == 0:
+            context['share_link'] = self.request.build_absolute_uri(
+                reverse('bookmarks_share'))
+        else:
+            context['share_link'] = settings.SHARE_LINK
+        context['share_title'] = settings.SHARE_TITLE
+
         return context
 
     def render_to_response(self, context, **response_kwargs):
@@ -51,7 +58,7 @@ def form_link(request, linkid=None):
 
             if form.is_valid():
                 form.save()
-        except Exception as e:
+        except:
             return HttpResponse(status=500)
         else:
             return HttpResponseRedirect(reverse('bookmarks_index'))
@@ -72,5 +79,13 @@ def form_link(request, linkid=None):
                     'tags': ','.join([_.name for _ in link.tags.all()])
                 }
             })
+    elif request.method == "GET":
+        form_fields = {}
+        if 'u' in request.GET:
+            form_fields['url'] = request.GET['u']
+
+        return render_response(request,
+                               'bookmarks/share.tpl',
+                               {'form': LinkForm(form_fields)})
     else:
         return HttpResponse(status=405)

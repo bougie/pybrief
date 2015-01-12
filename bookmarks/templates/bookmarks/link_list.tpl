@@ -79,6 +79,10 @@
 				<a href="{% url 'bookmarks_links_tag' tag.name %}">{{tag.name}}</a>
 			{% endfor %}
 		</div>
+
+		<div class="sidebar-module text-center">
+			<a class="btn btn-default" href="javascript:(function(){window.open('{{share_link}}?u='+encodeURIComponent(window.location));})()" id="bookmarkme" title="{{share_title}}" rel="sidebar"><span class="glyphicon glyphicon-link"></span>&nbsp;Bookmarklet</a>
+		</div>
 	</div>
 </div>
 {% endblock %}
