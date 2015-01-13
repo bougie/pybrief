@@ -20,6 +20,7 @@
 
 		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/bookmarks/style.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/pygments.css' %}" />
 	</head>
 	<body>
@@ -63,7 +64,7 @@
 
 		<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
-		<script type="text/javascript" src="{% static 'js/bookmarklet.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/bookmarks/script.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/bookmarks/bookmarklet.js' %}"></script>
 	</body>
 </html>

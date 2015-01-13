@@ -20,6 +20,7 @@
 
 		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/bookmarks/style.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/pygments.css' %}" />
 	</head>
 	<body>
