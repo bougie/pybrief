@@ -1,3 +1,6 @@
+/*
+ * Show or hide (depends on the current state) the add/edit bookmarks form
+ */
 function display_form_bookmark_block(id, force_hide) {
 	if($('#' + id + ':hidden').length == 0 || force_hide == true) {
 		$('#' + id).hide();
@@ -9,6 +12,9 @@ function display_form_bookmark_block(id, force_hide) {
 	}
 }
 
+/*
+ * Populate and display the add/edit bookmarks form
+ */
 function display_edit_bookmark_block(formid, linkid) {
 	if(linkid != undefined) {
 		linkid = linkid.split('-')[2];
@@ -33,6 +39,9 @@ function display_edit_bookmark_block(formid, linkid) {
 	}
 }
 
+/*
+ * Empty and hide add/edit bookmarks form
+ */
 function cancel_form_bookmark(formid) {
 	display_form_bookmark_block(formid, true);
 
