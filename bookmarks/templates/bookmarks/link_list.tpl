@@ -68,8 +68,8 @@
 	</div>
 	<div class="col-sm-2">
 		<div class="sidebar-module">
-			<div class="text-right">
-				<a href="#" id="add-bookmark-link" class="btn btn-default">Nouveau marque-page</a>
+			<div class="text-center">
+				<a href="#" id="add-bookmark-link" class="btn btn-default"><span class="glyphicon glyphicon-link"></span>&nbsp;Nouveau marque-page</a>
 			</div>
 		</div>
 		<div class="sidebar-module">
@@ -80,8 +80,10 @@
 			{% endfor %}
 		</div>
 
-		<div class="sidebar-module text-center">
-			<a class="btn btn-default" href="javascript:(function(){window.open('{{share_link}}?u='+encodeURIComponent(window.location));})()" id="bookmarkme" title="{{share_title}}" rel="sidebar"><span class="glyphicon glyphicon-link"></span>&nbsp;Bookmarklet</a>
+		<div class="sidebar-module">
+			<h4><span class="glyphicon glyphicon-hand-right"></span>&nbsp;Outils</h4>
+
+			<a class="" href="javascript:(function(){window.open('{{share_link}}?u='+encodeURIComponent(window.location));})()" id="bookmarkme" title="{{share_title}}" rel="sidebar">Create bookmarklet</a>
 		</div>
 	</div>
 </div>
