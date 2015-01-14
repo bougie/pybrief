@@ -68,7 +68,7 @@
 	</div>
 	<div class="col-sm-2">
 		<div class="sidebar-module sidebar-module-inset text-center">
-			<a href="#" id="add-bookmark-link" class="btn btn-default"><span class="glyphicon glyphicon-link"></span>&nbsp;Nouveau marque-page</a>
+			<a href="#" id="add-bookmark-link" class="btn btn-default"><span class="glyphicon glyphicon-link"></span>&nbsp;Nouveau<br />marque-page</a>
 		</div>
 		<div class="sidebar-module">
 			<h4><span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;Tags</h4>
