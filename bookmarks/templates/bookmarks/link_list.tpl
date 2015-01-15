@@ -38,6 +38,7 @@
 						{% endif %}
 
 						<a href="#" class="btn btn-default btn-xs edit-link" style="visibility: visible;" id="link-id-{{link.id}}"><span class="glyphicon glyphicon-edit"></span></a>
+						<a href="#" class="btn btn-default btn-xs delete-link" style="visibility: visible;" id="link-delid-{{link.id}}"><span class="glyphicon glyphicon-remove"></span></a>
 
 						{% if link.domain %}
 						<div class="link-description">by {{link.domain}}</div>
