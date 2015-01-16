@@ -46,7 +46,10 @@ class LinkList(ListView):
 
 @require_http_methods(["GET", "POST"])
 def form_link(request, linkid=None):
-    """Add or edit a link"""
+    """Add or edit a link
+
+    :param linkid: id of link to edit
+    :type linkid: integer"""
 
     if request.method == "POST":
         try:
