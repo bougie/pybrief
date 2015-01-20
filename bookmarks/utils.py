@@ -72,6 +72,11 @@ def get_title_link(url):
 
 
 def get_domain_link(url):
+    """Get the FQDN of a given url
+
+    :param url: url to get the domain
+    :type url: str"""
+
     domain = None
 
     try:
