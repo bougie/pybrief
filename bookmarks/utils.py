@@ -7,7 +7,7 @@ import html.parser
 def get_content_type(url):
     """Get the content type of a page
 
-    :param url: url you which get the content type
+    :param url: url to get the content type
     :type url: str"""
 
     content_type = None
@@ -31,7 +31,7 @@ def get_content_type(url):
 def get_title_link(url):
     """Get the page title for a given URL
 
-    :param url: url you which get the title
+    :param url: url to get the title
     :type url: str"""
 
     title = None
