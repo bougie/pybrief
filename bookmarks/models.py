@@ -15,8 +15,10 @@ class Link(models.Model):
     tags = models.ManyToManyField(Tag, null=True)
 
     def save(self, *args, **kwargs):
-        if self.title is None and self.domain is None:
+        if self.title is None:
             self.title = get_title_link(url=self.url)
+
+        if self.domain is None:
             self.domain = get_domain_link(url=self.url)
 
         super(Link, self).save(args, kwargs)
