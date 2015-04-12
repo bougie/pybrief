@@ -38,7 +38,7 @@
 		{% endif %}
 
 		<div class="sidebar-module">
-			<h4><span class="glyphicon glyphicon-tags"></span>&nbsp;Tags</h4>
+			<h4><span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;Tags</h4>
 
 			{% for tag in tags %}
 				<a href="{% url 'blog_posts_tag' tag.name %}">{{tag.name}}</a>
