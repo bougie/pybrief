@@ -5,7 +5,8 @@ from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse
 from django.views.generic import ListView
 from django.conf import settings
-from .models import Post, Tag
+from .models import Post
+from core.models import Tag
 
 
 def index(request):
