@@ -80,15 +80,15 @@ def get_domain_link(url):
     domain = None
 
     try:
-        tpattern = re.search(
-            "(https?://)?(.*/)?(.*)",
-            url,
-            flags=re.IGNORECASE | re.DOTALL)
+        tpattern = re.search("(https?://)?(.*)",
+                             url,
+                             flags=re.IGNORECASE | re.DOTALL)
         if tpattern is not None:
             if tpattern.group(2) is not None:
                 domain = tpattern.group(2)
             else:
-                domain = tpattern.group(3)
+                domain = tpattern.group(1)
+            domain = domain.split('/')[0]
 
             # remove trailing slash
             if domain.endswith('/'):
