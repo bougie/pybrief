@@ -21,6 +21,9 @@ class LinkForm(forms.ModelForm):
 
         instance = forms.ModelForm.save(self, commit=False)
 
+        if not instance.url.startswith('http'):
+            instance.url = 'http://' + instance.url
+
         def save_m2m():
             """Handle the m2m relation between Link and Tags. This function
             will erase and add tags for every actions on a link."""
