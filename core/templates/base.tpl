@@ -20,6 +20,7 @@
 
 		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/bookmarks/style.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/pygments.css' %}" />
 	</head>
 	<body>
@@ -36,6 +37,11 @@
 						<a class="blog-nav-item active" href="{% url 'blog_index' %}">Blog</a>
 					{% else %}
 						<a class="blog-nav-item" href="{% url 'blog_index' %}">Blog</a>
+					{% endif %}
+					{% if nav_current_module == 'bookmarks' %}
+						<a class="blog-nav-item active" href="{% url 'bookmarks_index' %}">Marque-pages</a>
+					{% else %}
+						<a class="blog-nav-item" href="{% url 'bookmarks_index' %}">Marque-pages</a>
 					{% endif %}
 				</nav>
 			</div>
@@ -58,5 +64,7 @@
 
 		<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/bookmarks/script.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/bookmarks/bookmarklet.js' %}"></script>
 	</body>
 </html>

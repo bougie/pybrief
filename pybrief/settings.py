@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'core',
     'blog',
+    'bookmarks',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -99,3 +100,7 @@ PID_DIR = '/tmp'
 
 NB_POSTS = 5
 NB_FULL_POSTS = 5
+NB_LINKS = 25
+
+SHARE_LINK = ""
+SHARE_TITLE = "HomeLet"

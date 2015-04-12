@@ -7,12 +7,7 @@ try:
     from markdown2 import markdown
 except:
     markdown = None
-
-
-class Tag(models.Model):
-    """Post's tags"""
-
-    name = models.CharField(max_length=255)
+from core.models import Tag
 
 
 class Post(models.Model):
