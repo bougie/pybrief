@@ -3,3 +3,8 @@ __pycache__
 .ropeproject/
 data/*
 migrations
+*.pyc
+/dist/
+/build/
+/*.egg-info
+/*.egg
