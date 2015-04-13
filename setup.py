@@ -6,7 +6,7 @@ def readme():
         return f.read()
 
 setup(name='pybrief',
-      version='1.0',
+      version='1.0.1',
       description="""PyBRIEF is a small blog system (and more cause it's
 modular) written in python with django""",
       long_description=readme(),
@@ -15,6 +15,7 @@ modular) written in python with django""",
                    'Programming Language :: Python :: 3',
                    'Programming Language :: Python :: 3.3',
                    'Programming Language :: Python :: 3.4',
+                   'Environment :: Web Environment',
                    'Framework :: Django',
                    'Framework :: Django :: 1.7'],
       keywords='django blog bookmarks',
@@ -22,7 +23,7 @@ modular) written in python with django""",
       author='David Hymonnet',
       author_email='bougie@appartland.eu',
       license='BSD',
-      packages=['pybrief', 'core', 'blog', 'bookmarks'],
+      packages=['pybrief'],
       install_requires=['django==1.7'],
       include_package_data=True,
       zip_safe=False)
