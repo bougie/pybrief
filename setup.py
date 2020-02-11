@@ -24,6 +24,6 @@ modular) written in python with django""",
       author_email='bougie@appartland.eu',
       license='BSD',
       packages=['pybrief'],
-      install_requires=['django==1.7'],
+      install_requires=['django==1.11.28'],
       include_package_data=True,
       zip_safe=False)
